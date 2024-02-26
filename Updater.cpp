@@ -2,7 +2,8 @@
 
 Updater::Updater()
 	: m_deltaClock()
-{}
+{
+}
 
 void Updater::update(const std::vector<IGameObject*>& objects, 
 					const KeyboardEvent & keyPress, 
@@ -48,7 +49,7 @@ bool Updater::isFrameTime()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= FRAME_RATE)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->FRAME_RATE)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -61,7 +62,7 @@ bool Updater::isSFXTime()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= RATE_05S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_05S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -74,7 +75,7 @@ bool Updater::isSpawnTime3S()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= RATE_3S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_3S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -87,7 +88,7 @@ bool Updater::isSpawnTime7S()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= RATE_7S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_7S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -100,7 +101,7 @@ bool Updater::isFireTime1S()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= RATE_1S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_1S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -113,7 +114,7 @@ bool Updater::isFireTime075S()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= RATE_075S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_075S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;

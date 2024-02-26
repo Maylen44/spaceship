@@ -1,7 +1,6 @@
 #ifndef UPDATER_H
 #define UPDATER_H
 
-#include "SharedContent.h"
 #include "IGameObject.h"
 
 class Updater

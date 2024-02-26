@@ -1,9 +1,21 @@
 #include "Game.h"
+#include "Background.h"
+#include "PlayerShip.h"
+#include "EnemyShipTypeA.h"
+#include "EnemyShipTypeB.h"
+#include "Projectile.h"
+
+SharedContent* g_sharedContent = nullptr;
 
 Game::Game()
 	: m_isPlaying(false)
 	, m_score(0)
-{}
+{
+	if (g_sharedContent == nullptr)
+	{
+		g_sharedContent = new SharedContent();
+	}
+}
 
 void Game::initialize()
 {
@@ -29,7 +41,7 @@ void Game::run()
 		if (status == ClossingApplication)
 		{
 			m_isPlaying = false;
-			clearObject(m_gameObjects);
+			clearObject();
 			m_renderer.closeWindow();
 		}
 		else if (status == RestartingApplication)
@@ -47,8 +59,64 @@ void Game::run()
 
 void Game::reset()
 {
-	clearObject(m_gameObjects);
+	clearObject();
 	initialize();
+}
+
+void Game::creatObject(const GameObjectType& type, int numOfObjects, IGameObject* refObject)
+{
+	for (int i = 0; i < numOfObjects; ++i)
+	{
+		if (type == ShipType) {}
+		else if (type == BackgroundType)
+		{
+			Background* background = new Background(m_assetsManager.getTexture(type), g_sharedContent->WINDOW_RESOLUTION);
+			m_gameObjects.push_back(background);
+		}
+		else if (type == PlayerType)
+		{
+			PlayerShip* player = new PlayerShip(m_assetsManager.getTexture(type));
+			m_gameObjects.push_back(player);
+			m_updater.reserContent(player);
+		}
+		else if (type == EnemyTypAType)
+		{
+			EnemyShipTypeA* enemy1 = new EnemyShipTypeA(m_assetsManager.getTexture(type));
+			m_gameObjects.push_back(enemy1);
+			m_updater.reserContent(enemy1);
+		}
+		else if (type == EnemyTypBType)
+		{
+			EnemyShipTypeB* enemy2 = new EnemyShipTypeB(m_assetsManager.getTexture(type));
+			m_gameObjects.push_back(enemy2);
+			m_updater.reserContent(enemy2);
+		}
+		else if (type == ProjectileType && refObject != nullptr)
+		{
+			Projectile* projectile = new Projectile(m_assetsManager.getTexture(type), refObject);
+			m_gameObjects.push_back(projectile);
+			m_updater.reserContent(projectile);
+		}
+		else if (type == NotSpecifiedType) {}
+	}
+}
+
+void Game::clearObject(int index)
+{
+	if (index >= 0)
+	{
+		delete m_gameObjects[index];
+		m_gameObjects.erase(m_gameObjects.begin() + index);
+		m_gameObjects.shrink_to_fit();
+	}
+	else
+	{
+		for (auto& object : m_gameObjects)
+		{
+			delete object;
+		}
+		m_gameObjects.clear();
+	}
 }
 
 void Game::progressGameLogic()
@@ -85,7 +153,7 @@ void Game::progressGameLogic()
 		case EnemyTypAType:
 			if (m_gameObjects[i]->getHealthPoints() <= 0)
 			{
-				clearObject(m_gameObjects, i);
+				clearObject(i);
 				--i;
 				m_score += 100;
 				m_assetsManager.playSFX(CollisionSound);
@@ -99,7 +167,7 @@ void Game::progressGameLogic()
 		case EnemyTypBType:
 			if (m_gameObjects[i]->getHealthPoints() <= 0)
 			{
-				clearObject(m_gameObjects, i);
+				clearObject(i);
 				--i;
 				m_score += 200;
 				m_assetsManager.playSFX(CollisionSound);
@@ -113,16 +181,16 @@ void Game::progressGameLogic()
 		case ProjectileType:
 			if (m_gameObjects[i]->getHealthPoints() <= 0)
 			{
-				clearObject(m_gameObjects, i);
+				clearObject(i);
 				--i;
 				m_assetsManager.playSFX(LaserHitSound);
 			}
-			else if (m_gameObjects[i]->getBounds().getPosition().x > WINDOW_RESOLUTION.x ||
-				m_gameObjects[i]->getBounds().getPosition().y > WINDOW_RESOLUTION.y ||
+			else if (m_gameObjects[i]->getBounds().getPosition().x > g_sharedContent->WINDOW_RESOLUTION.x ||
+				m_gameObjects[i]->getBounds().getPosition().y > g_sharedContent->WINDOW_RESOLUTION.y ||
 				m_gameObjects[i]->getBounds().getPosition().x < 0 ||
 				m_gameObjects[i]->getBounds().getPosition().y < 0)
 			{
-				clearObject(m_gameObjects, i);
+				clearObject(i);
 				--i;
 			}
 			break;
@@ -168,7 +236,7 @@ void Game::progressGameLogic()
 	sf::Text tmp_HP = m_assetsManager.getFormatedText(HPText);
 	tmpScore.setString("Score: " + std::to_string(m_score));
 	tmp_HP.setString("HP: " + std::to_string(tmpHP));
-	tmp_HP.setPosition(WINDOW_RESOLUTION.x - 80, 0);
+	tmp_HP.setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
 
 
 	m_renderer.renderContent(m_gameObjects, tmpScore, tmp_HP);

@@ -1,7 +1,6 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "SharedContent.h"
 #include "IGameObject.h"
 
 class Renderer

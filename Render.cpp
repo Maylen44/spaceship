@@ -1,21 +1,22 @@
 #include "Renderer.h"
 
-Test* gTest = nullptr;
-
 Renderer::Renderer()
-	: m_windowMode( WINDOW_RESOLUTION.x, WINDOW_RESOLUTION.y)
+	: m_windowMode()
 	, m_windowTitel("SPACESHIP")
 	, m_windowStyle(sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close)
-	, m_window(m_windowMode, m_windowTitel, m_windowStyle)
-{}
+	, m_window()
+{
+	if (g_sharedContent == nullptr)
+	{
+		g_sharedContent = new SharedContent();
+	}
+	m_windowMode.width = g_sharedContent->WINDOW_RESOLUTION.x;
+	m_windowMode.height = g_sharedContent->WINDOW_RESOLUTION.y;
+	m_window.create(m_windowMode, m_windowTitel, m_windowStyle);
+}
 
 sf::Event& Renderer::pollWindowEvent()
 {
-	if (gTest == nullptr)
-	{
-		gTest = new Test();
-	}
-	gTest->ini;
 	sf::Event pollRequest;
 	m_window.pollEvent(pollRequest);
 	return pollRequest;

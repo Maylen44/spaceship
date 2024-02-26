@@ -2,7 +2,6 @@
 #define SPACESHIP_H
 
 #include "IGameObject.h"
-#include "Projectile.h"
 
 class Spaceship : public IGameObject
 {

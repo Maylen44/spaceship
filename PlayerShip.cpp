@@ -58,8 +58,8 @@ void PlayerShip::draw(sf::RenderWindow& window)
 
 void PlayerShip::resetPosition()
 {
-	sf::Vector2f tmp = {WINDOW_RESOLUTION.x / 2 - m_size.x / 2, 
-						WINDOW_RESOLUTION.y / 2 - m_size.y / 2};
+	sf::Vector2f tmp = { g_sharedContent->WINDOW_RESOLUTION.x / 2 - m_size.x / 2,
+						g_sharedContent->WINDOW_RESOLUTION.y / 2 - m_size.y / 2};
 	m_sprite.setPosition(tmp);
 }
 

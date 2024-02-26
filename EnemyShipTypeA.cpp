@@ -20,13 +20,13 @@ void EnemyShipTypeA::update(const KeyboardEvent& keyPress,
 							const MouseEvent& mousePress)
 {
 	updateDuePlayerInputs(keyPress, mousePress);
-	sf::Vector2f directionToMiddle = sf::Vector2f(WINDOW_RESOLUTION.x / 2, WINDOW_RESOLUTION.y / 2) - m_sprite.getPosition();
+	sf::Vector2f directionToMiddle = sf::Vector2f(g_sharedContent->WINDOW_RESOLUTION.x / 2, g_sharedContent->WINDOW_RESOLUTION.y / 2) - m_sprite.getPosition();
 	float length = std::sqrt(directionToMiddle.x * directionToMiddle.x + directionToMiddle.y * directionToMiddle.y);
 	updateRotation(directionToMiddle, length);
-	updateFollowBehavior(WINDOW_RESOLUTION, directionToMiddle, length);
+	updateFollowBehavior(g_sharedContent->WINDOW_RESOLUTION, directionToMiddle, length);
 
-	if (getBounds().getPosition().x > WINDOW_RESOLUTION.x + m_size.x * 2 ||
-		getBounds().getPosition().y > WINDOW_RESOLUTION.y + m_size.y * 2 ||
+	if (getBounds().getPosition().x > g_sharedContent->WINDOW_RESOLUTION.x + m_size.x * 2 ||
+		getBounds().getPosition().y > g_sharedContent->WINDOW_RESOLUTION.y + m_size.y * 2 ||
 		getBounds().getPosition().x < 0 - m_size.x * 2 ||
 		getBounds().getPosition().y < 0 - m_size.y * 2)
 	{
@@ -86,13 +86,13 @@ void EnemyShipTypeA::resetPosition()
 
 	if (rand() % 2 == 0)
 	{
-		spawnPosition.x = (rand() % 2 == 0) ? -m_spawnOffset : WINDOW_RESOLUTION.x + m_spawnOffset;
-		spawnPosition.y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (WINDOW_RESOLUTION.y - m_spawnOffset * 2) + m_spawnOffset;
+		spawnPosition.x = (rand() % 2 == 0) ? -m_spawnOffset : g_sharedContent->WINDOW_RESOLUTION.x + m_spawnOffset;
+		spawnPosition.y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (g_sharedContent->WINDOW_RESOLUTION.y - m_spawnOffset * 2) + m_spawnOffset;
 	}
 	else
 	{
-		spawnPosition.x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (WINDOW_RESOLUTION.x - m_spawnOffset * 2) + m_spawnOffset;
-		spawnPosition.y = (rand() % 2 == 0) ? -m_spawnOffset : WINDOW_RESOLUTION.y + m_spawnOffset;
+		spawnPosition.x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (g_sharedContent->WINDOW_RESOLUTION.x - m_spawnOffset * 2) + m_spawnOffset;
+		spawnPosition.y = (rand() % 2 == 0) ? -m_spawnOffset : g_sharedContent->WINDOW_RESOLUTION.y + m_spawnOffset;
 	}
 	m_sprite.setPosition(spawnPosition.x, spawnPosition.y);
 }

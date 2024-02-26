@@ -7,21 +7,20 @@
 #include <string>
 #include <unordered_map>
 
-struct Test
+struct SharedContent
 {
-	int ini;
+	sf::Vector2f WINDOW_RESOLUTION{ 800.f, 600.f };
+	sf::Time FRAME_RATE{ sf::seconds(0.01f) };
+	sf::Time RATE_05S{ sf::seconds(0.5f) };
+	sf::Time RATE_075S{ sf::seconds(0.75f) };
+	sf::Time RATE_1S{ sf::seconds(1.0f) };
+	sf::Time RATE_3S{ sf::seconds(3.0f) };
+	sf::Time RATE_7S{ sf::seconds(7.0f) };
+
+
 };
 
-extern Test* gTest;
-
-const sf::Vector2f WINDOW_RESOLUTION { 800.f, 600.f };
-
-const sf::Time FRAME_RATE { sf::seconds(0.01f) };
-const sf::Time RATE_05S { sf::seconds(0.5f) };
-const sf::Time RATE_075S{ sf::seconds(0.75f) };
-const sf::Time RATE_1S{ sf::seconds(1.0f) };
-const sf::Time RATE_3S { sf::seconds(3.0f) };
-const sf::Time RATE_7S { sf::seconds(7.0f) };
+extern SharedContent* g_sharedContent;
 
 enum InputEvent
 {
