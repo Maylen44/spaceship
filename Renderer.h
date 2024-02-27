@@ -9,9 +9,7 @@ public:
 	Renderer();
 
 	sf::Event& pollWindowEvent();
-	void const renderContent(const std::vector<IGameObject*>& objects, 
-								sf::Text scoreText,
-								sf::Text hpText);
+	void const renderContent(const std::vector<IGameObject*>& objects);
 	void closeWindow();
 
 private:

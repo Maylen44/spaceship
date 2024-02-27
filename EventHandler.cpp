@@ -1,75 +1,61 @@
 #include "EventHandler.h"
 
-ApplicationStatus EventHandler::fetchApplicationStatus(sf::Event& windowPollEvent)
+InputEvent EventHandler::fetchApplicationStatus(sf::Event& windowPollEvent)
 {
-    ApplicationStatus status = Processing;
+    InputEvent status = NoInput;
 
     updateKeyboardState(windowPollEvent);
     updateMouseState(windowPollEvent);
 
-    if ((windowPollEvent.type == Closed) || keyboardState[ESC])
+    if ((windowPollEvent.type == sf::Event::Closed) || keyboardState[ESC])
     {
-        status = ClossingApplication;
+        status = ESC;
     }
-    else if (keyboardState[R])
+    else if (keyboardState[Restart])
     {
-        status = RestartingApplication;
+        status = Restart;
     }
     return status;
 }
 
-KeyboardEvent EventHandler::fetchKeyboardEvent()
+InputEvent EventHandler::fetchKeyboardEvent()
 {
-    KeyboardEvent result = NoKeyboardInput;
+    InputEvent result = NoInput;
 
-    if (keyboardState[W] && keyboardState[A])
-        result = MoveUpLeft;
-    else if (keyboardState[W] && keyboardState[D])
-        result = MoveUpRight;
-    else if (keyboardState[S] && keyboardState[A])
-        result = MoveDownLeft;
-    else if (keyboardState[S] && keyboardState[D])
-        result = MoveDownRight;
-    else if (keyboardState[Up] && keyboardState[Left])
-        result = MoveUpLeft;
-    else if (keyboardState[Up] && keyboardState[Right])
-        result = MoveUpRight;
-    else if (keyboardState[Down] && keyboardState[Left])
-        result = MoveDownLeft;
-    else if (keyboardState[Down] && keyboardState[Right])
-        result = MoveDownRight;
+    if ((keyboardState[W] && keyboardState[A]) || 
+        (keyboardState[Up] && keyboardState[Left]))
+        result = UpLeft;
+    else if ((keyboardState[W] && keyboardState[D]) || 
+        (keyboardState[Up] && keyboardState[Right]))
+        result = UpRight;
+    else if ((keyboardState[S] && keyboardState[A]) || 
+        (keyboardState[Down] && keyboardState[Left]))
+        result = DownLeft;
+    else if ((keyboardState[S] && keyboardState[D]) || 
+        (keyboardState[Down] && keyboardState[Right]))
+        result = DownRight;
 
-    else if (keyboardState[W])
-        result = MoveUp;
-    else if (keyboardState[Up])
-        result = MoveUp;
-    else if (keyboardState[S])
-        result = MoveDown;
-    else if (keyboardState[Down])
-        result = MoveDown;
-    else if (keyboardState[A])
-        result = MoveLeft;
-    else if (keyboardState[Left])
-        result = MoveLeft;
-    else if (keyboardState[D])
-        result = MoveRight;
-    else if (keyboardState[Right])
-        result = MoveRight;
+    else if (keyboardState[W] || keyboardState[Up])
+        result = Up;
+    else if (keyboardState[S] || keyboardState[Down])
+        result = Down;
+    else if (keyboardState[A] || keyboardState[Left])
+        result = Left;
+    else if (keyboardState[D] || keyboardState[Right])
+        result = Right;
 
     return result;
 }
 
-MouseEvent EventHandler::fetchMouseEvent()
+InputEvent EventHandler::fetchMouseEvent()
 {
-    MouseEvent result = NoMouseInput;
+    InputEvent result = NoInput;
     if(mouseState[MouseLeft] && mouseState[MouseRight])
-        result = RightAndLeftClick;
-    else if (keyboardState[Space])
-        result = RightClick;
+        result = MouseLeftAndRight;
     else if(mouseState[MouseLeft])
-        result = LeftClick;
+        result = MouseLeft;
     else if (mouseState[MouseRight])
-        result = RightClick;
+        result = MouseRight;
 
     return result;
 }

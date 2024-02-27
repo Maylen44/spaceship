@@ -8,8 +8,8 @@ class IGameObject
 public:
 	virtual ~IGameObject() = default;
 
-	virtual void update(const KeyboardEvent& keyPress, 
-						const MouseEvent& mousePress) {};
+	virtual void update(const InputEvent& keyPress, 
+						const InputEvent& mousePress) {};
 	virtual void handleInterraction(const Interraction& interraction, 
 									sf::FloatRect& refObject) {};
 	virtual void draw(sf::RenderWindow& window) {};

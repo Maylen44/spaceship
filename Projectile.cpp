@@ -18,7 +18,7 @@ Projectile::Projectile(const sf::Texture& texture, IGameObject* refObject)
 	}
 }
 
-void Projectile::update(const KeyboardEvent& keyPress, const MouseEvent& mousePress)
+void Projectile::update(const InputEvent& keyPress, const InputEvent& mousePress)
 {
 	updateMovement();
 	updateDuePlayerInputs(keyPress, mousePress);
@@ -52,38 +52,38 @@ sf::FloatRect& Projectile::getBounds()
 	return tmp;
 }
 
-void Projectile::updateDuePlayerInputs(const KeyboardEvent& keyPress, const MouseEvent& mousePress)
+void Projectile::updateDuePlayerInputs(const InputEvent& keyPress, const InputEvent& mousePress)
 {
 	float ingameSpeed = 2.0f;
-	if (mousePress == RightClick || mousePress == RightAndLeftClick)
+	if (mousePress == MouseRight || mousePress == MouseLeftAndRight)
 	{
 		ingameSpeed *= 2.0f;
 	}
 
 	switch (keyPress)
 	{
-	case MoveUp:
+	case Up:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case MoveDown:
+	case Down:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y - ingameSpeed);
 		break;
-	case MoveLeft:
+	case Left:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y);
 		break;
-	case MoveRight:
+	case Right:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y);
 		break;
-	case MoveUpLeft:
+	case UpLeft:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case MoveUpRight:
+	case UpRight:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case MoveDownLeft:
+	case DownLeft:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y - ingameSpeed);
 		break;
-	case MoveDownRight:
+	case DownRight:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y - ingameSpeed);
 		break;
 	default:

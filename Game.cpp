@@ -23,8 +23,8 @@ void Game::initialize()
 	m_score = 0;
 	creatObject(BackgroundType);
 	creatObject(PlayerType);
-	creatObject(EnemyTypAType, 3);
-	creatObject(EnemyTypBType, 2);
+	creatObject(EnemyTypeAType, 3);
+	creatObject(EnemyTypeBType, 2);
 	m_updater.resetContent(m_gameObjects);
 }
 
@@ -34,17 +34,17 @@ void Game::run()
 	
 	while (m_isPlaying)
 	{
-		ApplicationStatus status = m_eventHandler.fetchApplicationStatus(m_renderer.pollWindowEvent());
-		KeyboardEvent keyboardEvent = m_eventHandler.fetchKeyboardEvent();
-		MouseEvent mouseEvent = m_eventHandler.fetchMouseEvent();
+		InputEvent status = m_eventHandler.fetchApplicationStatus(m_renderer.pollWindowEvent());
+		InputEvent keyboardEvent = m_eventHandler.fetchKeyboardEvent();
+		InputEvent mouseEvent = m_eventHandler.fetchMouseEvent();
 
-		if (status == ClossingApplication)
+		if (status == ESC)
 		{
 			m_isPlaying = false;
 			clearObject();
 			m_renderer.closeWindow();
 		}
-		else if (status == RestartingApplication)
+		else if (status == Restart)
 		{
 			if (m_updater.isSFXTime())
 			{
@@ -54,6 +54,7 @@ void Game::run()
 		}
 		m_updater.update(m_gameObjects, keyboardEvent, mouseEvent);
 		progressGameLogic();
+		m_renderer.renderContent(m_gameObjects);
 	}
 }
 
@@ -79,13 +80,13 @@ void Game::creatObject(const GameObjectType& type, int numOfObjects, IGameObject
 			m_gameObjects.push_back(player);
 			m_updater.reserContent(player);
 		}
-		else if (type == EnemyTypAType)
+		else if (type == EnemyTypeAType)
 		{
 			EnemyShipTypeA* enemy1 = new EnemyShipTypeA(m_assetsManager.getTexture(type));
 			m_gameObjects.push_back(enemy1);
 			m_updater.reserContent(enemy1);
 		}
-		else if (type == EnemyTypBType)
+		else if (type == EnemyTypeBType)
 		{
 			EnemyShipTypeB* enemy2 = new EnemyShipTypeB(m_assetsManager.getTexture(type));
 			m_gameObjects.push_back(enemy2);
@@ -141,7 +142,8 @@ void Game::progressGameLogic()
 			{
 				reset();
 			}
-			if (m_eventHandler.fetchMouseEvent() == RightAndLeftClick || m_eventHandler.fetchMouseEvent() == LeftClick)
+
+			if ((m_eventHandler.fetchMouseEvent() == MouseLeftAndRight) || (m_eventHandler.fetchMouseEvent() == MouseLeft))
 			{
 				if (m_updater.isSFXTime())
 				{
@@ -149,8 +151,9 @@ void Game::progressGameLogic()
 					m_assetsManager.playSFX(LaserShotSound);
 				}
 			}
+			
 			break;
-		case EnemyTypAType:
+		case EnemyTypeAType:
 			if (m_gameObjects[i]->getHealthPoints() <= 0)
 			{
 				clearObject(i);
@@ -164,7 +167,7 @@ void Game::progressGameLogic()
 				m_assetsManager.playSFX(LaserShotSound);
 			}
 			break;
-		case EnemyTypBType:
+		case EnemyTypeBType:
 			if (m_gameObjects[i]->getHealthPoints() <= 0)
 			{
 				clearObject(i);
@@ -203,7 +206,7 @@ void Game::progressGameLogic()
 
 		for (auto& object : m_gameObjects)
 		{
-			if (object->getObjectTyp() == EnemyTypAType || object->getObjectTyp() == EnemyTypBType)
+			if (object->getObjectTyp() == EnemyTypeAType || object->getObjectTyp() == EnemyTypeBType)
 			{
 				++numEnemys;
 			}
@@ -212,33 +215,27 @@ void Game::progressGameLogic()
 		{
 			if (m_updater.isSpawnTime3S())
 			{
-				creatObject(EnemyTypAType);
+				creatObject(EnemyTypeAType);
 			}
 			if (m_updater.isSpawnTime7S())
 			{
-				creatObject(EnemyTypBType);
+				creatObject(EnemyTypeBType);
 			}
 		}
 		else if (numEnemys <= 14)
 		{
 			if (m_updater.isSpawnTime3S())
 			{
-				creatObject(EnemyTypAType);
+				creatObject(EnemyTypeAType);
 			}
 			if (m_updater.isSpawnTime7S())
 			{
-				creatObject(EnemyTypBType);
+				creatObject(EnemyTypeBType);
 			}
 		}
 	}
-
-	sf::Text tmpScore = m_assetsManager.getFormatedText(ScoreText);
-	sf::Text tmp_HP = m_assetsManager.getFormatedText(HPText);
-	tmpScore.setString("Score: " + std::to_string(m_score));
-	tmp_HP.setString("HP: " + std::to_string(tmpHP));
-	tmp_HP.setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
-
-
-	m_renderer.renderContent(m_gameObjects, tmpScore, tmp_HP);
+	g_sharedContent->TXT_SCORE.setString("Score: " + std::to_string(m_score));
+	g_sharedContent->TXT_HEALTHPOINTS_PLAYER.setString("HP: " + std::to_string(tmpHP));
+	g_sharedContent->TXT_HEALTHPOINTS_PLAYER.setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
 
 }

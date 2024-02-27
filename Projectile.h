@@ -9,7 +9,7 @@ public:
 	Projectile(const sf::Texture& texture, IGameObject* refObject = nullptr);
 	virtual ~Projectile() = default;
 
-	void update(const KeyboardEvent& keyPress, const MouseEvent& mousePress) override;
+	void update(const InputEvent& keyPress, const InputEvent& mousePress) override;
 	void handleInterraction(const Interraction& interraction, sf::FloatRect& refObject) override;
 	void draw(sf::RenderWindow& window) override;
 
@@ -18,7 +18,7 @@ public:
 	virtual int getHealthPoints() override { return m_healthPoints; };
 
 private:
-	void updateDuePlayerInputs(const KeyboardEvent& keyPress, const MouseEvent& mousePress);
+	void updateDuePlayerInputs(const InputEvent& keyPress, const InputEvent& mousePress);
 	void updateMovement();
 
 	int m_healthPoints;

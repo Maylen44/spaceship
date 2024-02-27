@@ -27,10 +27,10 @@ Background::Background(const sf::Texture& texture, const sf::Vector2f& boundarie
 	}
 }
 
-void Background::update(const KeyboardEvent& keyPress, const MouseEvent& mousePress)
+void Background::update(const InputEvent& keyPress, const InputEvent& mousePress)
 {
 	float ingameSpeed = m_scrollSpeed;
-	if (mousePress == RightClick || mousePress == RightAndLeftClick)
+	if (mousePress == MouseRight || mousePress == MouseLeftAndRight)
 	{
 		ingameSpeed *= m_boostMultiplier;
 	}
@@ -39,35 +39,35 @@ void Background::update(const KeyboardEvent& keyPress, const MouseEvent& mousePr
 	{
 		switch (keyPress)
 		{
-		case MoveUp:
+		case Up:
 			sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + ingameSpeed);
 			m_passiveStriveDirection = { 0.0f, m_passiveStriveSpeed };
 			break;
-		case MoveDown:
+		case Down:
 			sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - ingameSpeed);
 			m_passiveStriveDirection = { 0.0f, -m_passiveStriveSpeed };
 			break;
-		case MoveLeft:
+		case Left:
 			sprite.setPosition(sprite.getPosition().x + ingameSpeed, sprite.getPosition().y);
 			m_passiveStriveDirection = { m_passiveStriveSpeed, 0.0f };
 			break;
-		case MoveRight:
+		case Right:
 			sprite.setPosition(sprite.getPosition().x - ingameSpeed, sprite.getPosition().y);
 			m_passiveStriveDirection = { -m_passiveStriveSpeed, 0.0f };
 			break;
-		case MoveUpLeft:
+		case UpLeft:
 			sprite.setPosition(sprite.getPosition().x + ingameSpeed, sprite.getPosition().y + ingameSpeed);
 			m_passiveStriveDirection = { m_passiveStriveSpeed, m_passiveStriveSpeed };
 			break;
-		case MoveUpRight:
+		case UpRight:
 			sprite.setPosition(sprite.getPosition().x - ingameSpeed, sprite.getPosition().y + ingameSpeed);
 			m_passiveStriveDirection = { -m_passiveStriveSpeed, m_passiveStriveSpeed };
 			break;
-		case MoveDownLeft:
+		case DownLeft:
 			sprite.setPosition(sprite.getPosition().x + ingameSpeed, sprite.getPosition().y - ingameSpeed);
 			m_passiveStriveDirection = { m_passiveStriveSpeed, -m_passiveStriveSpeed };
 			break;
-		case MoveDownRight:
+		case DownRight:
 			sprite.setPosition(sprite.getPosition().x - ingameSpeed, sprite.getPosition().y - ingameSpeed);
 			m_passiveStriveDirection = { -m_passiveStriveSpeed, -m_passiveStriveSpeed };
 			break;

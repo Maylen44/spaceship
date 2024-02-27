@@ -6,9 +6,9 @@
 class EventHandler
 {
 public:
-	ApplicationStatus fetchApplicationStatus(sf::Event& windowPollEvent);
-	KeyboardEvent fetchKeyboardEvent();
-	MouseEvent fetchMouseEvent();
+	InputEvent fetchApplicationStatus(sf::Event& windowPollEvent);
+	InputEvent fetchKeyboardEvent();
+	InputEvent fetchMouseEvent();
 
 private:
 	void updateKeyboardState(sf::Event& event);

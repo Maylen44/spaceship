@@ -29,7 +29,7 @@ PlayerShip::PlayerShip(const sf::Texture& texture)
 	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
 }
 
-void PlayerShip::update(const KeyboardEvent& keyPress, const MouseEvent& mousePress)
+void PlayerShip::update(const InputEvent& keyPress, const InputEvent& mousePress)
 {
 	m_sprite.setRotation(m_rotationAngle);
 }

@@ -16,8 +16,8 @@ EnemyShipTypeA::EnemyShipTypeA(const sf::Texture& texture)
 	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
 }
 
-void EnemyShipTypeA::update(const KeyboardEvent& keyPress, 
-							const MouseEvent& mousePress)
+void EnemyShipTypeA::update(const InputEvent& keyPress, 
+							const InputEvent& mousePress)
 {
 	updateDuePlayerInputs(keyPress, mousePress);
 	sf::Vector2f directionToMiddle = sf::Vector2f(g_sharedContent->WINDOW_RESOLUTION.x / 2, g_sharedContent->WINDOW_RESOLUTION.y / 2) - m_sprite.getPosition();
@@ -97,39 +97,39 @@ void EnemyShipTypeA::resetPosition()
 	m_sprite.setPosition(spawnPosition.x, spawnPosition.y);
 }
 
-void EnemyShipTypeA::updateDuePlayerInputs(const KeyboardEvent& keyPress, 
-											const MouseEvent& mousePress)
+void EnemyShipTypeA::updateDuePlayerInputs(const InputEvent& keyPress, 
+											const InputEvent& mousePress)
 {
 	float ingameSpeed = m_speed;
-	if (mousePress == RightClick || mousePress == RightAndLeftClick)
+	if (mousePress == MouseRight || mousePress == MouseLeftAndRight)
 	{
 		ingameSpeed *= m_boostMultiplier;
 	}
 
 	switch (keyPress)
 	{
-	case MoveUp:
+	case Up:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case MoveDown:
+	case Down:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y - ingameSpeed);
 		break;
-	case MoveLeft:
+	case Left:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y);
 		break;
-	case MoveRight:
+	case Right:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y);
 		break;
-	case MoveUpLeft:
+	case UpLeft:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case MoveUpRight:
+	case UpRight:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case MoveDownLeft:
+	case DownLeft:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y - ingameSpeed);
 		break;
-	case MoveDownRight:
+	case DownRight:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y - ingameSpeed);
 		break;
 	default:

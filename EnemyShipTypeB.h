@@ -9,17 +9,17 @@ public:
 	EnemyShipTypeB(const sf::Texture& texture);
 	virtual ~EnemyShipTypeB() = default;
 
-	void update(const KeyboardEvent& keyPress, const MouseEvent& mousePress) override;
+	void update(const InputEvent& keyPress, const InputEvent& mousePress) override;
 	void handleInterraction(const Interraction& interraction, sf::FloatRect& refObject) override;
 	void draw(sf::RenderWindow& window) override;
 	void resetPosition() override;
 
 private:
-	void updateDuePlayerInputs(const KeyboardEvent& keyPress, const MouseEvent& mousePress);
+	void updateDuePlayerInputs(const InputEvent& keyPress, const InputEvent& mousePress);
 	void updateRotation(sf::Vector2f& directionToMiddle, const float length);
 	void updateFollowBehavior(const sf::Vector2f& boundaries, const sf::Vector2f& directionToMiddle, const float length);
 	
-	GameObjectType getObjectTyp() override { return EnemyTypBType; };
+	GameObjectType getObjectTyp() override { return EnemyTypeBType; };
 	sf::FloatRect& getBounds() override;
 	sf::Vector2f& getPosition() override;
 	float getRotation() override { return m_sprite.getRotation(); };

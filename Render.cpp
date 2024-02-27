@@ -22,17 +22,15 @@ sf::Event& Renderer::pollWindowEvent()
 	return pollRequest;
 }
 
-void const Renderer::renderContent(const std::vector<IGameObject*>& objects, 
-										sf::Text scoreText,
-										sf::Text hpText)
+void const Renderer::renderContent(const std::vector<IGameObject*>& objects)
 {
 	m_window.clear();
 	for (int i = 0; i < objects.size(); ++i)
 	{
 		objects[i]->draw(m_window);
 	}
-	m_window.draw(scoreText);
-	m_window.draw(hpText);
+	m_window.draw(g_sharedContent->TXT_SCORE);
+	m_window.draw(g_sharedContent->TXT_HEALTHPOINTS_PLAYER);
 	m_window.display();
 }
 

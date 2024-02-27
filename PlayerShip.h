@@ -9,7 +9,7 @@ public:
 	PlayerShip(const sf::Texture& texture);
 	virtual ~PlayerShip() = default;
 
-	void update(const KeyboardEvent& keyPress, const MouseEvent& mousePress) override;
+	void update(const InputEvent& keyPress, const InputEvent& mousePress) override;
 	void handleInterraction(const Interraction& interraction, sf::FloatRect& refObject) override;
 	void draw(sf::RenderWindow& window) override;
 	void resetPosition() override;

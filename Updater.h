@@ -9,8 +9,8 @@ public:
 	Updater();
 
 	void update(const std::vector<IGameObject*>& objects, 
-				const KeyboardEvent& keyPress, 
-				const MouseEvent& mousePress);
+				const InputEvent& keyPress, 
+				const InputEvent& mousePress);
 
 	void resetContent(std::vector<IGameObject*>& objects);
 	void reserContent(IGameObject* object);

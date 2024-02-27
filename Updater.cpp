@@ -6,8 +6,8 @@ Updater::Updater()
 }
 
 void Updater::update(const std::vector<IGameObject*>& objects, 
-					const KeyboardEvent & keyPress, 
-					const MouseEvent & mousePress)
+					const InputEvent& keyPress, 
+					const InputEvent& mousePress)
 {
 	if (isFrameTime())
 	{
@@ -49,7 +49,7 @@ bool Updater::isFrameTime()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= g_sharedContent->FRAME_RATE)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->TIME_RATE_001S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -62,7 +62,7 @@ bool Updater::isSFXTime()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_05S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->TIME_RATE_05S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -75,7 +75,7 @@ bool Updater::isSpawnTime3S()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_3S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->TIME_RATE_3S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -88,7 +88,7 @@ bool Updater::isSpawnTime7S()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_7S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->TIME_RATE_7S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -101,7 +101,7 @@ bool Updater::isFireTime1S()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_1S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->TIME_RATE_1S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
@@ -114,7 +114,7 @@ bool Updater::isFireTime075S()
 	bool result = false;
 	static sf::Time lastFrameTime;
 	sf::Time elapsedTime = m_deltaClock.getElapsedTime();
-	if (elapsedTime - lastFrameTime >= g_sharedContent->RATE_075S)
+	if (elapsedTime - lastFrameTime >= g_sharedContent->TIME_RATE_075S)
 	{
 		lastFrameTime = elapsedTime;
 		result = true;
