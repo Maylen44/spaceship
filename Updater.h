@@ -24,7 +24,7 @@ public:
 
 
 private:
-	void manageCollisions(const std::vector<IGameObject*>& objects);
+	void manageCollisions(IGameObject* firstObject, IGameObject* secondObject);
 
 	sf::Clock m_deltaClock;
 };

@@ -5,7 +5,6 @@
 #include "Renderer.h"
 #include "Updater.h"
 #include "EventHandler.h"
-#include "AssetsManager.h"
 #include "IGameObject.h"
 
 class Game
@@ -31,7 +30,6 @@ private:
 	Renderer m_renderer;
 	Updater m_updater;
 	EventHandler m_eventHandler;
-	AssetsManager m_assetsManager;
 	std::vector<IGameObject*> m_gameObjects;
 };
 

@@ -11,11 +11,26 @@ void Updater::update(const std::vector<IGameObject*>& objects,
 {
 	if (isFrameTime())
 	{
-		for (auto& object : objects)
+		for (auto& firstObject : objects)
 		{
-			object->update(keyPress, mousePress);
+			firstObject->update(keyPress, mousePress);
+
+			if (firstObject->getObjectTyp() != NotSpecifiedType &&
+				firstObject->getObjectTyp() != BackgroundType &&
+				firstObject->getObjectTyp() != ShipType)
+			{
+				for (auto& secondObject : objects)
+				{
+					if (secondObject->getObjectTyp() != NotSpecifiedType &&
+						secondObject->getObjectTyp() != BackgroundType &&
+						secondObject->getObjectTyp() != ShipType)
+					{
+						manageCollisions(firstObject, secondObject);
+					}
+				}
+			}
+			
 		}
-		manageCollisions(objects);
 	}
 
 	/*
@@ -122,38 +137,19 @@ bool Updater::isFireTime075S()
 	return result;
 }
 
-void Updater::manageCollisions(const std::vector<IGameObject*>& objects)
+void Updater::manageCollisions(IGameObject* firstObject, IGameObject* secondObject)
 {
-	sf::FloatRect firstObjectBounds;
-	sf::FloatRect secondObjectBounds;
-
-	for (auto& firstObject : objects)
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+	sf::FloatRect firstObjectBounds = firstObject->getBounds();
+	sf::FloatRect secondObjectBounds = secondObject->getBounds();
+	
+	if (firstObject != secondObject)
 	{
-		if (firstObject->getObjectTyp() != NotSpecifiedType &&
-			firstObject->getObjectTyp() != BackgroundType &&
-			firstObject->getObjectTyp() != ShipType)
+		if (firstObjectBounds.intersects(secondObjectBounds))
 		{
-			firstObjectBounds = firstObject->getBounds();
-
-			for (auto& secondObject : objects)
-			{
-				if (secondObject->getObjectTyp() != NotSpecifiedType &&
-					secondObject->getObjectTyp() != BackgroundType &&
-					secondObject->getObjectTyp() != ShipType)
-				{
-					if (firstObject != secondObject)
-					{
-						secondObjectBounds = secondObject->getBounds();
-
-						if (firstObjectBounds.intersects(secondObjectBounds))
-						{
-							firstObject->handleInterraction(ObjectsCollision, secondObjectBounds);
-							secondObject->handleInterraction(ObjectsCollision, firstObjectBounds);
-							break;
-						}
-					}
-				}
-			}
+			s_AssetManager->playSFX(CollisionSound);
+			firstObject->handleInterraction(secondObjectBounds);
+			secondObject->handleInterraction(firstObjectBounds);
 		}
 	}
 }

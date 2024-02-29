@@ -1,6 +1,6 @@
 #include "EnemyShipTypeA.h"
 
-EnemyShipTypeA::EnemyShipTypeA(const sf::Texture& texture)
+EnemyShipTypeA::EnemyShipTypeA()
 	: m_baseSpeed(1.0f)
 	, m_speed(m_passiveStriveSpeed + m_baseSpeed)
 	, m_boostMultiplier(2.0f)
@@ -9,9 +9,11 @@ EnemyShipTypeA::EnemyShipTypeA(const sf::Texture& texture)
 	, m_stopZoneRange(100.0f, 150.0f)
 	, m_spawnOffset(40.0f)
 {
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+
 	m_healthPoints = 1;
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-	m_sprite.setTexture(texture);
+	m_sprite.setTexture(s_AssetManager->TX_ENEMY_SHIP_VAR_1);
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
 }
@@ -34,45 +36,33 @@ void EnemyShipTypeA::update(const InputEvent& keyPress,
 	}
 }
 
-void EnemyShipTypeA::handleInterraction(const Interraction& interraction, 
-										sf::FloatRect& refObject)
+void EnemyShipTypeA::handleInterraction(sf::FloatRect& refObject)
 {
 	sf::Vector2f mainPosition = m_sprite.getPosition();
 	sf::Vector2f refPosition = refObject.getPosition();
 	sf::Vector2f movePosition = mainPosition;
-
-	switch (interraction)
+	if (mainPosition.x >= refPosition.x && mainPosition.y >= refPosition.y)
 	{
-	case ObjectsCollision:
-		m_healthPoints--;
-		if (mainPosition.x >= refPosition.x && mainPosition.y >= refPosition.y)
-		{
-			movePosition.x = mainPosition.x + 1.0f / (m_speed * m_reactionDelay / 2);
-			movePosition.y = mainPosition.y + 1.0f / (m_speed * m_reactionDelay / 2);
-		}
-		else if (mainPosition.x >= refPosition.x && mainPosition.y < refPosition.y)
-		{
-			movePosition.x = mainPosition.x + 1.0f / (m_speed * m_reactionDelay / 2);
-			movePosition.y = mainPosition.y - 1.0f / (m_speed * m_reactionDelay / 2);
-		}
-		else if (mainPosition.x < refPosition.x && mainPosition.y >= refPosition.y)
-		{
-			movePosition.x = mainPosition.x - 1.0f / (m_speed * m_reactionDelay / 2);
-			movePosition.y = mainPosition.y + 1.0f / (m_speed * m_reactionDelay / 2);
-		}
-		else
-		{
-			movePosition.x = mainPosition.x - 1.0f / (m_speed * m_reactionDelay / 2);
-			movePosition.y = mainPosition.y - 1.0f / (m_speed * m_reactionDelay / 2);
-		}
-		m_sprite.setPosition(movePosition);
-		break;
-	case ShotCollision:
-		m_healthPoints--;
-		break;
-	default:
-		break;
+		movePosition.x = mainPosition.x + 1.0f / (m_speed * m_reactionDelay / 2);
+		movePosition.y = mainPosition.y + 1.0f / (m_speed * m_reactionDelay / 2);
 	}
+	else if (mainPosition.x >= refPosition.x && mainPosition.y < refPosition.y)
+	{
+		movePosition.x = mainPosition.x + 1.0f / (m_speed * m_reactionDelay / 2);
+		movePosition.y = mainPosition.y - 1.0f / (m_speed * m_reactionDelay / 2);
+	}
+	else if (mainPosition.x < refPosition.x && mainPosition.y >= refPosition.y)
+	{
+		movePosition.x = mainPosition.x - 1.0f / (m_speed * m_reactionDelay / 2);
+		movePosition.y = mainPosition.y + 1.0f / (m_speed * m_reactionDelay / 2);
+	}
+	else
+	{
+		movePosition.x = mainPosition.x - 1.0f / (m_speed * m_reactionDelay / 2);
+		movePosition.y = mainPosition.y - 1.0f / (m_speed * m_reactionDelay / 2);
+	}
+	m_sprite.setPosition(movePosition);
+	m_healthPoints--;
 }
 
 void EnemyShipTypeA::draw(sf::RenderWindow& window)

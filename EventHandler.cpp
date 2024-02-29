@@ -7,11 +7,11 @@ InputEvent EventHandler::fetchApplicationStatus(sf::Event& windowPollEvent)
     updateKeyboardState(windowPollEvent);
     updateMouseState(windowPollEvent);
 
-    if ((windowPollEvent.type == sf::Event::Closed) || keyboardState[ESC])
+    if ((windowPollEvent.type == sf::Event::Closed) || keyboardState[sf::Keyboard::Escape])
     {
         status = ESC;
     }
-    else if (keyboardState[Restart])
+    else if (keyboardState[sf::Keyboard::R])
     {
         status = Restart;
     }
@@ -22,26 +22,26 @@ InputEvent EventHandler::fetchKeyboardEvent()
 {
     InputEvent result = NoInput;
 
-    if ((keyboardState[W] && keyboardState[A]) || 
-        (keyboardState[Up] && keyboardState[Left]))
+    if ((keyboardState[sf::Keyboard::W] && keyboardState[sf::Keyboard::A]) ||
+        (keyboardState[sf::Keyboard::Up] && keyboardState[sf::Keyboard::Left]))
         result = UpLeft;
-    else if ((keyboardState[W] && keyboardState[D]) || 
-        (keyboardState[Up] && keyboardState[Right]))
+    else if ((keyboardState[sf::Keyboard::W] && keyboardState[sf::Keyboard::D]) ||
+        (keyboardState[sf::Keyboard::Up] && keyboardState[sf::Keyboard::Right]))
         result = UpRight;
-    else if ((keyboardState[S] && keyboardState[A]) || 
-        (keyboardState[Down] && keyboardState[Left]))
+    else if ((keyboardState[sf::Keyboard::S] && keyboardState[sf::Keyboard::A]) ||
+        (keyboardState[sf::Keyboard::Down] && keyboardState[sf::Keyboard::Left]))
         result = DownLeft;
-    else if ((keyboardState[S] && keyboardState[D]) || 
-        (keyboardState[Down] && keyboardState[Right]))
+    else if ((keyboardState[sf::Keyboard::S] && keyboardState[sf::Keyboard::D]) ||
+        (keyboardState[sf::Keyboard::Down] && keyboardState[sf::Keyboard::Right]))
         result = DownRight;
 
-    else if (keyboardState[W] || keyboardState[Up])
+    else if (keyboardState[sf::Keyboard::W] || keyboardState[sf::Keyboard::Up])
         result = Up;
-    else if (keyboardState[S] || keyboardState[Down])
+    else if (keyboardState[sf::Keyboard::S] || keyboardState[sf::Keyboard::Down])
         result = Down;
-    else if (keyboardState[A] || keyboardState[Left])
+    else if (keyboardState[sf::Keyboard::A] || keyboardState[sf::Keyboard::Left])
         result = Left;
-    else if (keyboardState[D] || keyboardState[Right])
+    else if (keyboardState[sf::Keyboard::D] || keyboardState[sf::Keyboard::Right])
         result = Right;
 
     return result;
@@ -50,11 +50,11 @@ InputEvent EventHandler::fetchKeyboardEvent()
 InputEvent EventHandler::fetchMouseEvent()
 {
     InputEvent result = NoInput;
-    if(mouseState[MouseLeft] && mouseState[MouseRight])
+    if(mouseState[sf::Mouse::Left] && mouseState[sf::Mouse::Right])
         result = MouseLeftAndRight;
-    else if(mouseState[MouseLeft])
+    else if(mouseState[sf::Mouse::Left])
         result = MouseLeft;
-    else if (mouseState[MouseRight])
+    else if (mouseState[sf::Mouse::Right])
         result = MouseRight;
 
     return result;
@@ -63,15 +63,15 @@ InputEvent EventHandler::fetchMouseEvent()
 void EventHandler::updateKeyboardState(sf::Event& event)
 {
     if (event.type == sf::Event::KeyPressed)
-        keyboardState[static_cast<InputEvent>(event.key.code)] = true;
+        keyboardState[event.key.code] = true;
     else if (event.type == sf::Event::KeyReleased)
-        keyboardState[static_cast<InputEvent>(event.key.code)] = false;
+        keyboardState[event.key.code] = false;
 }
 
 void EventHandler::updateMouseState(sf::Event& event)
 {
     if (event.type == sf::Event::MouseButtonPressed)
-        mouseState[static_cast<InputEvent>(event.mouseButton.button)] = true;
+        mouseState[event.mouseButton.button] = true;
     else if (event.type == sf::Event::MouseButtonReleased)
-        mouseState[static_cast<InputEvent>(event.mouseButton.button)] = false;
+        mouseState[event.mouseButton.button] = false;
 }

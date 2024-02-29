@@ -6,7 +6,7 @@
 class Background : public IGameObject
 {
 public:
-	Background(const sf::Texture& texture, const sf::Vector2f& boundaries);
+	Background(const sf::Vector2f& boundaries);
 	virtual ~Background() = default;
 
 	void update(const InputEvent& keyPress, const InputEvent& mousePress) override;
@@ -16,7 +16,6 @@ public:
 private:
 	void resetBackground(sf::Sprite& sprite);
 	sf::Vector2f rotateVector(const sf::Vector2f& vector, float angle);
-	void updateDuePlayerInputs(const InputEvent& keyPress, const InputEvent& mousePress);
 
 	std::vector <sf::Sprite> m_backgroundSprites;
 	const sf::Vector2f m_size;

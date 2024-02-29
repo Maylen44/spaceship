@@ -1,6 +1,6 @@
 #include "Projectile.h"
 
-Projectile::Projectile(const sf::Texture& texture, IGameObject* refObject)
+Projectile::Projectile(IGameObject* refObject)
 	: m_healthPoints(1)
 	, m_shotAngle(0.0f)
 	, m_moveSpeed(4.5f)
@@ -9,8 +9,11 @@ Projectile::Projectile(const sf::Texture& texture, IGameObject* refObject)
 {
 	if (refObject != nullptr)
 	{
+		AssetsManager* s_AssetManager = AssetsManager::instance();
+
+		s_AssetManager->playSFX(LaserShotSound);
 		m_shotAngle = refObject->getRotation();
-		m_sprite.setTexture(texture);
+		m_sprite.setTexture(s_AssetManager->TX_PROJECTILE);
 		m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 		m_sprite.setOrigin(0.25f * m_size.x, -m_size.x - 21.0f);
 		m_sprite.setPosition(refObject->getPosition());
@@ -24,18 +27,9 @@ void Projectile::update(const InputEvent& keyPress, const InputEvent& mousePress
 	updateDuePlayerInputs(keyPress, mousePress);
 }
 
-void Projectile::handleInterraction(const Interraction& interraction, sf::FloatRect& refObject)
+void Projectile::handleInterraction(sf::FloatRect& refObject)
 {
-	switch (interraction)
-	{
-	case ObjectsCollision:
-		break;
-	case ShotCollision:
-		m_healthPoints--;
-		break;
-	default:
-		break;
-	}
+	m_healthPoints--;
 }
 
 void Projectile::draw(sf::RenderWindow& window)

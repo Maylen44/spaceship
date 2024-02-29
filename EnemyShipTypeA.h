@@ -6,11 +6,11 @@
 class EnemyShipTypeA : public Spaceship
 {
 public:
-	EnemyShipTypeA(const sf::Texture& texture);
+	EnemyShipTypeA();
 	virtual ~EnemyShipTypeA() = default;
 
 	void update(const InputEvent& keyPress, const InputEvent& mousePress) override;
-	void handleInterraction(const Interraction& interraction, sf::FloatRect& refObject) override;
+	void handleInterraction(sf::FloatRect& refObject) override;
 	void draw(sf::RenderWindow& window) override;
 	void resetPosition() override;
 

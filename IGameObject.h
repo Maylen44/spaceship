@@ -2,6 +2,7 @@
 #define I_GAME_OBJECT_H
 
 #include "SharedContent.h"
+#include "AssetsManager.h"
 
 class IGameObject
 {
@@ -10,8 +11,7 @@ public:
 
 	virtual void update(const InputEvent& keyPress, 
 						const InputEvent& mousePress) {};
-	virtual void handleInterraction(const Interraction& interraction, 
-									sf::FloatRect& refObject) {};
+	virtual void handleInterraction(sf::FloatRect& refObject) {};
 	virtual void draw(sf::RenderWindow& window) {};
 	virtual void resetPosition() {};
 	

@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "AssetsManager.h"
 #include "Background.h"
 #include "PlayerShip.h"
 #include "EnemyShipTypeA.h"
@@ -7,9 +8,14 @@
 
 SharedContent* g_sharedContent = nullptr;
 
+
 Game::Game()
 	: m_isPlaying(false)
 	, m_score(0)
+	, m_renderer()
+	, m_updater()
+	, m_eventHandler()
+	, m_gameObjects()
 {
 	if (g_sharedContent == nullptr)
 	{
@@ -31,6 +37,8 @@ void Game::initialize()
 void Game::run()
 {
 	initialize();
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+
 	
 	while (m_isPlaying)
 	{
@@ -48,7 +56,7 @@ void Game::run()
 		{
 			if (m_updater.isSFXTime())
 			{
-				m_assetsManager.playSFX(RestartSound);
+				s_AssetManager->playSFX(RestartSound);
 			}
 			reset();
 		}
@@ -71,30 +79,30 @@ void Game::creatObject(const GameObjectType& type, int numOfObjects, IGameObject
 		if (type == ShipType) {}
 		else if (type == BackgroundType)
 		{
-			Background* background = new Background(m_assetsManager.getTexture(type), g_sharedContent->WINDOW_RESOLUTION);
+			Background* background = new Background(g_sharedContent->WINDOW_RESOLUTION);
 			m_gameObjects.push_back(background);
 		}
 		else if (type == PlayerType)
 		{
-			PlayerShip* player = new PlayerShip(m_assetsManager.getTexture(type));
+			PlayerShip* player = new PlayerShip();
 			m_gameObjects.push_back(player);
 			m_updater.reserContent(player);
 		}
 		else if (type == EnemyTypeAType)
 		{
-			EnemyShipTypeA* enemy1 = new EnemyShipTypeA(m_assetsManager.getTexture(type));
+			EnemyShipTypeA* enemy1 = new EnemyShipTypeA();
 			m_gameObjects.push_back(enemy1);
 			m_updater.reserContent(enemy1);
 		}
 		else if (type == EnemyTypeBType)
 		{
-			EnemyShipTypeB* enemy2 = new EnemyShipTypeB(m_assetsManager.getTexture(type));
+			EnemyShipTypeB* enemy2 = new EnemyShipTypeB();
 			m_gameObjects.push_back(enemy2);
 			m_updater.reserContent(enemy2);
 		}
 		else if (type == ProjectileType && refObject != nullptr)
 		{
-			Projectile* projectile = new Projectile(m_assetsManager.getTexture(type), refObject);
+			Projectile* projectile = new Projectile(refObject);
 			m_gameObjects.push_back(projectile);
 			m_updater.reserContent(projectile);
 		}
@@ -122,6 +130,8 @@ void Game::clearObject(int index)
 
 void Game::progressGameLogic()
 {
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+
 	int numEnemys = 0;
 	int tmpHP = 0;
 	GameObjectType type;
@@ -148,7 +158,6 @@ void Game::progressGameLogic()
 				if (m_updater.isSFXTime())
 				{
 					creatObject(ProjectileType, 1, m_gameObjects[i]);
-					m_assetsManager.playSFX(LaserShotSound);
 				}
 			}
 			
@@ -159,12 +168,10 @@ void Game::progressGameLogic()
 				clearObject(i);
 				--i;
 				m_score += 100;
-				m_assetsManager.playSFX(CollisionSound);
 			}
 			if (m_updater.isFireTime1S())
 			{
 				creatObject(ProjectileType, 1, m_gameObjects[i]);
-				m_assetsManager.playSFX(LaserShotSound);
 			}
 			break;
 		case EnemyTypeBType:
@@ -173,12 +180,10 @@ void Game::progressGameLogic()
 				clearObject(i);
 				--i;
 				m_score += 200;
-				m_assetsManager.playSFX(CollisionSound);
 			}
 			if (m_updater.isFireTime075S())
 			{
 				creatObject(ProjectileType, 1, m_gameObjects[i]);
-				m_assetsManager.playSFX(LaserShotSound);
 			}
 			break;
 		case ProjectileType:
@@ -186,7 +191,6 @@ void Game::progressGameLogic()
 			{
 				clearObject(i);
 				--i;
-				m_assetsManager.playSFX(LaserHitSound);
 			}
 			else if (m_gameObjects[i]->getBounds().getPosition().x > g_sharedContent->WINDOW_RESOLUTION.x ||
 				m_gameObjects[i]->getBounds().getPosition().y > g_sharedContent->WINDOW_RESOLUTION.y ||
@@ -234,8 +238,9 @@ void Game::progressGameLogic()
 			}
 		}
 	}
-	g_sharedContent->TXT_SCORE.setString("Score: " + std::to_string(m_score));
-	g_sharedContent->TXT_HEALTHPOINTS_PLAYER.setString("HP: " + std::to_string(tmpHP));
-	g_sharedContent->TXT_HEALTHPOINTS_PLAYER.setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
+	
+	s_AssetManager->TXT_SCORE.setString("Score: " + std::to_string(m_score));
+	s_AssetManager->TXT_HEALTHPOINTS_PLAYER.setString("HP: " + std::to_string(tmpHP));
+	s_AssetManager->TXT_HEALTHPOINTS_PLAYER.setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
 
 }

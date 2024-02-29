@@ -1,6 +1,6 @@
 #include "Background.h"
 
-Background::Background(const sf::Texture& texture, const sf::Vector2f& boundaries)
+Background::Background(const sf::Vector2f& boundaries)
 	: m_backgroundSprites(4)
 	, m_size(boundaries.x, boundaries.y)
 	, m_scrollSpeed(0.3f)
@@ -8,9 +8,11 @@ Background::Background(const sf::Texture& texture, const sf::Vector2f& boundarie
 	, m_passiveStriveSpeed(0.2f)
 	, m_boostMultiplier(2.0f)
 {
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+
 	for (int i = 0; i < 4; ++i)
 	{
-		m_backgroundSprites[i].setTexture(texture);
+		m_backgroundSprites[i].setTexture(s_AssetManager->TX_BACKGROUND);
 		m_backgroundSprites[i].setOrigin(0.f, 0.f);
 		if (i == 1)
 		{

@@ -20,11 +20,13 @@ static float getAngle(float x1, float y1, float x2, float y2)
 }
 
 
-PlayerShip::PlayerShip(const sf::Texture& texture)
+PlayerShip::PlayerShip()
 	: m_rotationAngle(m_sprite.getRotation())
 {
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+
 	m_healthPoints = 10;
-	m_sprite.setTexture(texture);
+	m_sprite.setTexture(s_AssetManager->TX_PLAYER_SHIP);
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
 }
@@ -34,20 +36,9 @@ void PlayerShip::update(const InputEvent& keyPress, const InputEvent& mousePress
 	m_sprite.setRotation(m_rotationAngle);
 }
 
-void PlayerShip::handleInterraction(const Interraction& interraction, 
-									sf::FloatRect& refObject)
+void PlayerShip::handleInterraction(sf::FloatRect& refObject)
 {
-	switch (interraction)
-	{
-	case ObjectsCollision:
-		m_healthPoints--;
-		break;
-	case ShotCollision:
-		m_healthPoints--;
-		break;
-	default:
-		break;
-	}
+	m_healthPoints--;
 }
 
 void PlayerShip::draw(sf::RenderWindow& window)

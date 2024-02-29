@@ -24,13 +24,15 @@ sf::Event& Renderer::pollWindowEvent()
 
 void const Renderer::renderContent(const std::vector<IGameObject*>& objects)
 {
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+
 	m_window.clear();
 	for (int i = 0; i < objects.size(); ++i)
 	{
 		objects[i]->draw(m_window);
 	}
-	m_window.draw(g_sharedContent->TXT_SCORE);
-	m_window.draw(g_sharedContent->TXT_HEALTHPOINTS_PLAYER);
+	m_window.draw(s_AssetManager->TXT_SCORE);
+	m_window.draw(s_AssetManager->TXT_HEALTHPOINTS_PLAYER);
 	m_window.display();
 }
 
