@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <vector>
 #include <cmath>
 #include <string>
 #include <unordered_map>
@@ -45,13 +46,13 @@ enum InputEvent
 
 enum GameObjectType
 {
+	NotSpecifiedType,
 	BackgroundType,
 	ShipType,
 	PlayerType,
 	EnemyTypeAType,
 	EnemyTypeBType,
-	ProjectileType,
-	NotSpecifiedType
+	ProjectileType
 };
 
 enum SFX

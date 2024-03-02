@@ -6,10 +6,10 @@
 class Background : public IGameObject
 {
 public:
-	Background(const sf::Vector2f& boundaries);
+	Background();
 	virtual ~Background() = default;
 
-	void update(const InputEvent& keyPress, const InputEvent& mousePress) override;
+	void update(const std::vector<InputEvent>& events) override;
 	void draw(sf::RenderWindow& window) override;
 	GameObjectType getObjectTyp() override { return BackgroundType; };
 

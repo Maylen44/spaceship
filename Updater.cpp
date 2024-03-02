@@ -6,14 +6,13 @@ Updater::Updater()
 }
 
 void Updater::update(const std::vector<IGameObject*>& objects, 
-					const InputEvent& keyPress, 
-					const InputEvent& mousePress)
+					const std::vector<InputEvent>& events)
 {
 	if (isFrameTime())
 	{
 		for (auto& firstObject : objects)
 		{
-			firstObject->update(keyPress, mousePress);
+			firstObject->update(events);
 
 			if (firstObject->getObjectTyp() != NotSpecifiedType &&
 				firstObject->getObjectTyp() != BackgroundType &&
@@ -147,9 +146,12 @@ void Updater::manageCollisions(IGameObject* firstObject, IGameObject* secondObje
 	{
 		if (firstObjectBounds.intersects(secondObjectBounds))
 		{
-			s_AssetManager->playSFX(CollisionSound);
-			firstObject->handleInterraction(secondObjectBounds);
-			secondObject->handleInterraction(firstObjectBounds);
+			if (isSFXTime())
+			{
+				s_AssetManager->playSFX(CollisionSound);
+				firstObject->handleInterraction(secondObjectBounds);
+				secondObject->handleInterraction(firstObjectBounds);
+			}
 		}
 	}
 }

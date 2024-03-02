@@ -1,15 +1,15 @@
 #include "Background.h"
 
-Background::Background(const sf::Vector2f& boundaries)
+Background::Background()
 	: m_backgroundSprites(4)
-	, m_size(boundaries.x, boundaries.y)
+	, m_size(g_sharedContent->WINDOW_RESOLUTION.x, g_sharedContent->WINDOW_RESOLUTION.y)
 	, m_scrollSpeed(0.3f)
 	, m_passiveStriveDirection(0.1f, 0.1f)
 	, m_passiveStriveSpeed(0.2f)
 	, m_boostMultiplier(2.0f)
 {
 	AssetsManager* s_AssetManager = AssetsManager::instance();
-
+	
 	for (int i = 0; i < 4; ++i)
 	{
 		m_backgroundSprites[i].setTexture(s_AssetManager->TX_BACKGROUND);
@@ -29,17 +29,17 @@ Background::Background(const sf::Vector2f& boundaries)
 	}
 }
 
-void Background::update(const InputEvent& keyPress, const InputEvent& mousePress)
+void Background::update(const std::vector<InputEvent>& events)
 {
 	float ingameSpeed = m_scrollSpeed;
-	if (mousePress == MouseRight || mousePress == MouseLeftAndRight)
+	if (events[2] == MouseRight || events[2] == MouseLeftAndRight)
 	{
 		ingameSpeed *= m_boostMultiplier;
 	}
 
 	for (auto& sprite : m_backgroundSprites)
 	{
-		switch (keyPress)
+		switch (events[1])
 		{
 		case Up:
 			sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + ingameSpeed);

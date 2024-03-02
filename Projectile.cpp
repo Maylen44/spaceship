@@ -21,10 +21,10 @@ Projectile::Projectile(IGameObject* refObject)
 	}
 }
 
-void Projectile::update(const InputEvent& keyPress, const InputEvent& mousePress)
+void Projectile::update(const std::vector<InputEvent>& events)
 {
 	updateMovement();
-	updateDuePlayerInputs(keyPress, mousePress);
+	updateDuePlayerInputs(events);
 }
 
 void Projectile::handleInterraction(sf::FloatRect& refObject)
@@ -46,15 +46,15 @@ sf::FloatRect& Projectile::getBounds()
 	return tmp;
 }
 
-void Projectile::updateDuePlayerInputs(const InputEvent& keyPress, const InputEvent& mousePress)
+void Projectile::updateDuePlayerInputs(const std::vector<InputEvent>& events)
 {
 	float ingameSpeed = 2.0f;
-	if (mousePress == MouseRight || mousePress == MouseLeftAndRight)
+	if (events[2] == MouseRight || events[2] == MouseLeftAndRight)
 	{
 		ingameSpeed *= 2.0f;
 	}
 
-	switch (keyPress)
+	switch (events[1])
 	{
 	case Up:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + ingameSpeed);

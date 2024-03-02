@@ -29,9 +29,10 @@ PlayerShip::PlayerShip()
 	m_sprite.setTexture(s_AssetManager->TX_PLAYER_SHIP);
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
+	resetPosition();
 }
 
-void PlayerShip::update(const InputEvent& keyPress, const InputEvent& mousePress)
+void PlayerShip::update(const std::vector<InputEvent>& events)
 {
 	m_sprite.setRotation(m_rotationAngle);
 }

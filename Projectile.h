@@ -6,10 +6,10 @@
 class Projectile : public IGameObject
 {
 public:
-	Projectile(IGameObject* refObject = nullptr);
+	Projectile(IGameObject* refObject);
 	virtual ~Projectile() = default;
 
-	void update(const InputEvent& keyPress, const InputEvent& mousePress) override;
+	void update(const std::vector<InputEvent>& events) override;
 	void handleInterraction(sf::FloatRect& refObject) override;
 	void draw(sf::RenderWindow& window) override;
 
@@ -18,7 +18,7 @@ public:
 	virtual int getHealthPoints() override { return m_healthPoints; };
 
 private:
-	void updateDuePlayerInputs(const InputEvent& keyPress, const InputEvent& mousePress);
+	void updateDuePlayerInputs(const std::vector<InputEvent>& events);
 	void updateMovement();
 
 	int m_healthPoints;

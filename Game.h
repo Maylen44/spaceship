@@ -16,17 +16,14 @@ public:
 	void run();
 	void reset();
 
-	void creatObject(const GameObjectType& type,
-		int numOfObjects = 1,
-		IGameObject* refObject = nullptr);
+	void creatObject(const GameObjectType& type, int numOfObjects = 1, IGameObject* refObject = nullptr);
 	void clearObject(int index = -1);
 
 private:
-	void progressGameLogic();
+	void progressGameLogic(const std::vector<InputEvent>& events);
 
 	bool m_isPlaying;
 	int m_score;
-
 	Renderer m_renderer;
 	Updater m_updater;
 	EventHandler m_eventHandler;

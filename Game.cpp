@@ -8,7 +8,6 @@
 
 SharedContent* g_sharedContent = nullptr;
 
-
 Game::Game()
 	: m_isPlaying(false)
 	, m_score(0)
@@ -38,31 +37,33 @@ void Game::run()
 {
 	initialize();
 	AssetsManager* s_AssetManager = AssetsManager::instance();
+	std::vector<InputEvent> events(3, NoInput);
 
-	
 	while (m_isPlaying)
 	{
-		InputEvent status = m_eventHandler.fetchApplicationStatus(m_renderer.pollWindowEvent());
-		InputEvent keyboardEvent = m_eventHandler.fetchKeyboardEvent();
-		InputEvent mouseEvent = m_eventHandler.fetchMouseEvent();
+		m_eventHandler.setEvents(events, m_renderer.pollWindowEvent());
 
-		if (status == ESC)
+		switch (events[0])
 		{
+		case ESC:
 			m_isPlaying = false;
 			clearObject();
 			m_renderer.closeWindow();
-		}
-		else if (status == Restart)
-		{
+			break;
+		case Restart:
 			if (m_updater.isSFXTime())
 			{
 				s_AssetManager->playSFX(RestartSound);
 			}
 			reset();
+			break;
+		default:
+			break;
 		}
-		m_updater.update(m_gameObjects, keyboardEvent, mouseEvent);
-		progressGameLogic();
+		m_updater.update(m_gameObjects, events);
+		progressGameLogic(events);
 		m_renderer.renderContent(m_gameObjects);
+		
 	}
 }
 
@@ -74,40 +75,47 @@ void Game::reset()
 
 void Game::creatObject(const GameObjectType& type, int numOfObjects, IGameObject* refObject)
 {
-	for (int i = 0; i < numOfObjects; ++i)
+	if (type == BackgroundType)
 	{
-		if (type == ShipType) {}
-		else if (type == BackgroundType)
+		for (int i = 0; i < numOfObjects; ++i)
 		{
-			Background* background = new Background(g_sharedContent->WINDOW_RESOLUTION);
+			Background* background = new Background();
 			m_gameObjects.push_back(background);
 		}
-		else if (type == PlayerType)
-		{
+	}
+	else if (type == PlayerType)
+	{
+		for (int i = 0; i < numOfObjects; ++i)
+		{ 
 			PlayerShip* player = new PlayerShip();
 			m_gameObjects.push_back(player);
-			m_updater.reserContent(player);
 		}
-		else if (type == EnemyTypeAType)
+	}
+	else if (type == EnemyTypeAType)
+	{
+		for (int i = 0; i < numOfObjects; ++i)
 		{
 			EnemyShipTypeA* enemy1 = new EnemyShipTypeA();
 			m_gameObjects.push_back(enemy1);
-			m_updater.reserContent(enemy1);
 		}
-		else if (type == EnemyTypeBType)
+	}
+	else if (type == EnemyTypeBType)
+	{
+		for (int i = 0; i < numOfObjects; ++i)
 		{
 			EnemyShipTypeB* enemy2 = new EnemyShipTypeB();
 			m_gameObjects.push_back(enemy2);
-			m_updater.reserContent(enemy2);
 		}
-		else if (type == ProjectileType && refObject != nullptr)
+	}
+	else if (type == ProjectileType)
+	{
+		for (int i = 0; i < numOfObjects; ++i)
 		{
 			Projectile* projectile = new Projectile(refObject);
 			m_gameObjects.push_back(projectile);
-			m_updater.reserContent(projectile);
 		}
-		else if (type == NotSpecifiedType) {}
 	}
+	
 }
 
 void Game::clearObject(int index)
@@ -128,7 +136,7 @@ void Game::clearObject(int index)
 	}
 }
 
-void Game::progressGameLogic()
+void Game::progressGameLogic(const std::vector<InputEvent>& events)
 {
 	AssetsManager* s_AssetManager = AssetsManager::instance();
 
@@ -152,8 +160,8 @@ void Game::progressGameLogic()
 			{
 				reset();
 			}
-
-			if ((m_eventHandler.fetchMouseEvent() == MouseLeftAndRight) || (m_eventHandler.fetchMouseEvent() == MouseLeft))
+			
+			if ((events[2] == MouseLeftAndRight) || (events[2] == MouseLeft))
 			{
 				if (m_updater.isSFXTime())
 				{

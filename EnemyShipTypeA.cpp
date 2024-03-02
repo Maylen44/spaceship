@@ -16,12 +16,12 @@ EnemyShipTypeA::EnemyShipTypeA()
 	m_sprite.setTexture(s_AssetManager->TX_ENEMY_SHIP_VAR_1);
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
+	resetPosition();
 }
 
-void EnemyShipTypeA::update(const InputEvent& keyPress, 
-							const InputEvent& mousePress)
+void EnemyShipTypeA::update(const std::vector<InputEvent>& events)
 {
-	updateDuePlayerInputs(keyPress, mousePress);
+	updateDuePlayerInputs(events);
 	sf::Vector2f directionToMiddle = sf::Vector2f(g_sharedContent->WINDOW_RESOLUTION.x / 2, g_sharedContent->WINDOW_RESOLUTION.y / 2) - m_sprite.getPosition();
 	float length = std::sqrt(directionToMiddle.x * directionToMiddle.x + directionToMiddle.y * directionToMiddle.y);
 	updateRotation(directionToMiddle, length);
@@ -87,16 +87,15 @@ void EnemyShipTypeA::resetPosition()
 	m_sprite.setPosition(spawnPosition.x, spawnPosition.y);
 }
 
-void EnemyShipTypeA::updateDuePlayerInputs(const InputEvent& keyPress, 
-											const InputEvent& mousePress)
+void EnemyShipTypeA::updateDuePlayerInputs(const std::vector<InputEvent>& events)
 {
 	float ingameSpeed = m_speed;
-	if (mousePress == MouseRight || mousePress == MouseLeftAndRight)
+	if (events[2] == MouseRight || events[2] == MouseLeftAndRight)
 	{
 		ingameSpeed *= m_boostMultiplier;
 	}
 
-	switch (keyPress)
+	switch (events[1])
 	{
 	case Up:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + ingameSpeed);

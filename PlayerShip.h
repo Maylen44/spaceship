@@ -9,7 +9,7 @@ public:
 	PlayerShip();
 	virtual ~PlayerShip() = default;
 
-	void update(const InputEvent& keyPress, const InputEvent& mousePress) override;
+	void update(const std::vector<InputEvent>& events) override;
 	void handleInterraction(sf::FloatRect& refObject) override;
 	void draw(sf::RenderWindow& window) override;
 	void resetPosition() override;
