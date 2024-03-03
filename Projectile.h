@@ -14,8 +14,8 @@ public:
 	void draw(sf::RenderWindow& window) override;
 
 	GameObjectType getObjectTyp() override { return ProjectileType; };
-	sf::FloatRect& getBounds() override;
-	virtual int getHealthPoints() override { return m_healthPoints; };
+	//sf::FloatRect& getBounds() override;
+	int getHealthPoints() override { return m_healthPoints; };
 
 private:
 	void updateDuePlayerInputs(const std::vector<InputEvent>& events);

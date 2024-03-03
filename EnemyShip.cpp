@@ -1,25 +1,16 @@
-#include "EnemyShipTypeB.h"
+#include "EnemyShip.h"
 
-EnemyShipTypeB::EnemyShipTypeB()
-	: m_baseSpeed(0.7f)
-	, m_speed(m_passiveStriveSpeed + m_baseSpeed)
+EnemyShip::EnemyShip()
+	: m_baseSpeed()
+	, m_speed()
 	, m_boostMultiplier(2.0f)
-	, m_rotationSpeed(0.015f)
+	, m_rotationSpeed()
 	, m_reactionDelay(2.0f)
-	, m_stopZoneRange(150.0f, 200.0f)
+	, m_stopZoneRange()
 	, m_spawnOffset(40.0f)
-{
-	AssetsManager* s_AssetManager = AssetsManager::instance();
+{}
 
-	m_healthPoints = 3;
-	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-	m_sprite.setTexture(s_AssetManager->TX_ENEMY_SHIP_VAR_2);
-	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
-	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
-	resetPosition();
-}
-
-void EnemyShipTypeB::update(const std::vector<InputEvent>& events)
+void EnemyShip::update(const std::vector<InputEvent>& events)
 {
 	updateDuePlayerInputs(events);
 	sf::Vector2f directionToMiddle = sf::Vector2f(g_sharedContent->WINDOW_RESOLUTION.x / 2, g_sharedContent->WINDOW_RESOLUTION.y / 2) - m_sprite.getPosition();
@@ -36,42 +27,9 @@ void EnemyShipTypeB::update(const std::vector<InputEvent>& events)
 	}
 }
 
-void EnemyShipTypeB::handleInterraction(sf::FloatRect& refObject)
-{
-	sf::Vector2f mainPosition = m_sprite.getPosition();
-	sf::Vector2f refPosition = refObject.getPosition();
-	sf::Vector2f movePosition = mainPosition;
 
-	if (mainPosition.x >= refPosition.x && mainPosition.y >= refPosition.y)
-	{
-		movePosition.x = mainPosition.x + 1.0f / (m_speed * m_reactionDelay / 2);
-		movePosition.y = mainPosition.y + 1.0f / (m_speed * m_reactionDelay / 2);
-	}
-	else if (mainPosition.x >= refPosition.x && mainPosition.y < refPosition.y)
-	{
-		movePosition.x = mainPosition.x + 1.0f / (m_speed * m_reactionDelay / 2);
-		movePosition.y = mainPosition.y - 1.0f / (m_speed * m_reactionDelay / 2);
-	}
-	else if (mainPosition.x < refPosition.x && mainPosition.y >= refPosition.y)
-	{
-		movePosition.x = mainPosition.x - 1.0f / (m_speed * m_reactionDelay / 2);
-		movePosition.y = mainPosition.y + 1.0f / (m_speed * m_reactionDelay / 2);
-	}
-	else
-	{
-		movePosition.x = mainPosition.x - 1.0f / (m_speed * m_reactionDelay / 2);
-		movePosition.y = mainPosition.y - 1.0f / (m_speed * m_reactionDelay / 2);
-	}
-	m_sprite.setPosition(movePosition);
-	m_healthPoints--;
-}
 
-void EnemyShipTypeB::draw(sf::RenderWindow& window)
-{
-	window.draw(m_sprite);
-}
-
-void EnemyShipTypeB::resetPosition()
+void EnemyShip::resetPosition()
 {
 	sf::Vector2f spawnPosition = { 0.0f, 0.0f };
 
@@ -88,7 +46,7 @@ void EnemyShipTypeB::resetPosition()
 	m_sprite.setPosition(spawnPosition.x, spawnPosition.y);
 }
 
-void EnemyShipTypeB::updateDuePlayerInputs(const std::vector<InputEvent>& events)
+void EnemyShip::updateDuePlayerInputs(const std::vector<InputEvent>& events)
 {
 	float ingameSpeed = m_speed;
 	if (events[2] == MouseRight || events[2] == MouseLeftAndRight)
@@ -127,7 +85,7 @@ void EnemyShipTypeB::updateDuePlayerInputs(const std::vector<InputEvent>& events
 	}
 }
 
-void EnemyShipTypeB::updateRotation(sf::Vector2f& directionToMiddle, const float length)
+void EnemyShip::updateRotation(sf::Vector2f& directionToMiddle, const float length)
 {
 	if (length != 0)
 	{
@@ -147,9 +105,7 @@ void EnemyShipTypeB::updateRotation(sf::Vector2f& directionToMiddle, const float
 	m_sprite.setRotation(currentRotation + m_rotationSpeed * rotationDiff);
 }
 
-void EnemyShipTypeB::updateFollowBehavior(const sf::Vector2f& boundaries, 
-										const sf::Vector2f& directionToMiddle, 
-										const float length)
+void EnemyShip::updateFollowBehavior(const sf::Vector2f& boundaries, const sf::Vector2f& directionToMiddle, const float length)
 {
 	//retreate back to safezone
 	if (length < m_stopZoneRange.x)
@@ -176,19 +132,4 @@ void EnemyShipTypeB::updateFollowBehavior(const sf::Vector2f& boundaries,
 	{
 		m_sprite.setPosition(m_sprite.getPosition() + directionToMiddle / (m_speed * m_reactionDelay));
 	}
-}
-
-sf::FloatRect& EnemyShipTypeB::getBounds()
-{
-	sf::FloatRect tmp = { m_sprite.getGlobalBounds().left + (m_size.x / 2 / 2),
-						m_sprite.getGlobalBounds().top + (m_size.y / 2 / 2),
-						m_sprite.getGlobalBounds().width / 2,
-						m_sprite.getGlobalBounds().height / 2 };
-	return tmp;
-}
-
-sf::Vector2f& EnemyShipTypeB::getPosition()
-{
-	sf::Vector2f tmp = m_sprite.getPosition();
-	return tmp;
 }

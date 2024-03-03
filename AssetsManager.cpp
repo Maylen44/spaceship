@@ -58,4 +58,5 @@ AssetsManager::AssetsManager()
 	TXT_HEALTHPOINTS_PLAYER.setCharacterSize(24);
 	TXT_SCORE.setFillColor(sf::Color::Yellow);
 	TXT_HEALTHPOINTS_PLAYER.setFillColor(sf::Color::Green);
+	TXT_HEALTHPOINTS_PLAYER.setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
 }

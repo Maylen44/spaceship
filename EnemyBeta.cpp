@@ -1,0 +1,48 @@
+#include "EnemyBeta.h"
+
+EnemyBeta::EnemyBeta()
+{
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+	
+	m_baseSpeed = 0.7f;
+	m_speed = m_passiveStriveSpeed + m_baseSpeed;
+	m_rotationSpeed = 0.015f;
+	m_stopZoneRange = sf::Vector2f{ 150.0f, 200.0f };
+	m_healthPoints = 3;
+	
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
+	m_sprite.setTexture(s_AssetManager->TX_ENEMY_SHIP_VAR_2);
+	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
+	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
+	resetPosition();
+}
+
+void EnemyBeta::handleInterraction(sf::FloatRect& refObject)
+{
+	sf::Vector2f mainPosition = m_sprite.getPosition();
+	sf::Vector2f refPosition = refObject.getPosition();
+	sf::Vector2f movePosition = mainPosition;
+
+	if (mainPosition.x >= refPosition.x && mainPosition.y >= refPosition.y)
+	{
+		movePosition.x = mainPosition.x + 1.0f / (m_speed * m_reactionDelay / 2);
+		movePosition.y = mainPosition.y + 1.0f / (m_speed * m_reactionDelay / 2);
+	}
+	else if (mainPosition.x >= refPosition.x && mainPosition.y < refPosition.y)
+	{
+		movePosition.x = mainPosition.x + 1.0f / (m_speed * m_reactionDelay / 2);
+		movePosition.y = mainPosition.y - 1.0f / (m_speed * m_reactionDelay / 2);
+	}
+	else if (mainPosition.x < refPosition.x && mainPosition.y >= refPosition.y)
+	{
+		movePosition.x = mainPosition.x - 1.0f / (m_speed * m_reactionDelay / 2);
+		movePosition.y = mainPosition.y + 1.0f / (m_speed * m_reactionDelay / 2);
+	}
+	else
+	{
+		movePosition.x = mainPosition.x - 1.0f / (m_speed * m_reactionDelay / 2);
+		movePosition.y = mainPosition.y - 1.0f / (m_speed * m_reactionDelay / 2);
+	}
+	m_sprite.setPosition(movePosition);
+	m_healthPoints--;
+}

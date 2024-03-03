@@ -4,6 +4,18 @@
 #include "SharedContent.h"
 #include "AssetsManager.h"
 
+enum GameObjectType
+{
+	NotSpecifiedType,
+	BackgroundType,
+	ShipType,
+	PlayerType,
+	EnemyType,
+	EnemyAlphaType,
+	EnemyBetaType,
+	ProjectileType
+};
+
 class IGameObject
 {
 public:
@@ -15,14 +27,13 @@ public:
 	virtual void resetPosition() {};
 	
 	virtual GameObjectType getObjectTyp() { return NotSpecifiedType; };
+
+	//tmp fields! delete after managing projectiles!!!
 	virtual sf::FloatRect& getBounds() { return m_tmp; };
-	virtual sf::Vector2f& getPosition() { return m_tmp2; };
-	virtual float getRotation() { return 0; };
 	virtual int getHealthPoints() { return 0; };
 
 private:
 	sf::FloatRect m_tmp;
-	sf::Vector2f m_tmp2;
 };
 
 #endif //I_GAME_OBJECT_H

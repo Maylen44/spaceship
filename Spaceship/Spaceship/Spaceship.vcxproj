@@ -21,8 +21,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\AssetsManager.cpp" />
     <ClCompile Include="..\..\Background.cpp" />
-    <ClCompile Include="..\..\EnemyShipTypeB.cpp" />
-    <ClCompile Include="..\..\EnemyShipTypeA.cpp" />
+    <ClCompile Include="..\..\EnemyShip.cpp" />
+    <ClCompile Include="..\..\EnemyBeta.cpp" />
+    <ClCompile Include="..\..\EnemyAlpha.cpp" />
     <ClCompile Include="..\..\EventHandler.cpp" />
     <ClCompile Include="..\..\Game.cpp" />
     <ClCompile Include="..\..\Main.cpp" />
@@ -35,8 +36,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\AssetsManager.h" />
     <ClInclude Include="..\..\Background.h" />
-    <ClInclude Include="..\..\EnemyShipTypeA.h" />
-    <ClInclude Include="..\..\EnemyShipTypeB.h" />
+    <ClInclude Include="..\..\EnemyShip.h" />
+    <ClInclude Include="..\..\EnemyAlpha.h" />
+    <ClInclude Include="..\..\EnemyBeta.h" />
     <ClInclude Include="..\..\EventHandler.h" />
     <ClInclude Include="..\..\Game.h" />
     <ClInclude Include="..\..\IGameObject.h" />

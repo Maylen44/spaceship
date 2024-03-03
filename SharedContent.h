@@ -44,17 +44,6 @@ enum InputEvent
 	MouseLeftAndRight
 };
 
-enum GameObjectType
-{
-	NotSpecifiedType,
-	BackgroundType,
-	ShipType,
-	PlayerType,
-	EnemyTypeAType,
-	EnemyTypeBType,
-	ProjectileType
-};
-
 enum SFX
 {
 	LaserShotSound,

@@ -30,13 +30,13 @@
     <ClCompile Include="..\..\EventHandler.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\EnemyShipTypeB.cpp">
+    <ClCompile Include="..\..\EnemyBeta.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PlayerShip.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\EnemyShipTypeA.cpp">
+    <ClCompile Include="..\..\EnemyAlpha.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Updater.cpp">
@@ -49,6 +49,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Projectile.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\EnemyShip.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,10 +68,10 @@
     <ClInclude Include="..\..\Renderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\EnemyShipTypeA.h">
+    <ClInclude Include="..\..\EnemyAlpha.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\EnemyShipTypeB.h">
+    <ClInclude Include="..\..\EnemyBeta.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\..\EventHandler.h">
@@ -90,6 +93,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\..\SharedContent.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\EnemyShip.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

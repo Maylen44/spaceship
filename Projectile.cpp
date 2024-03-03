@@ -12,11 +12,11 @@ Projectile::Projectile(IGameObject* refObject)
 		AssetsManager* s_AssetManager = AssetsManager::instance();
 
 		s_AssetManager->playSFX(LaserShotSound);
-		m_shotAngle = refObject->getRotation();
+		//m_shotAngle = refObject->getRotation();
 		m_sprite.setTexture(s_AssetManager->TX_PROJECTILE);
 		m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 		m_sprite.setOrigin(0.25f * m_size.x, -m_size.x - 21.0f);
-		m_sprite.setPosition(refObject->getPosition());
+		//m_sprite.setPosition(refObject->getPosition());
 		m_sprite.setRotation(m_shotAngle);
 	}
 }
@@ -37,6 +37,7 @@ void Projectile::draw(sf::RenderWindow& window)
 	window.draw(m_sprite);
 }
 
+/*
 sf::FloatRect& Projectile::getBounds()
 {
 	sf::FloatRect tmp = { m_sprite.getGlobalBounds().left + (m_size.x / 2 / 2),
@@ -45,6 +46,8 @@ sf::FloatRect& Projectile::getBounds()
 						m_sprite.getGlobalBounds().height / 2 };
 	return tmp;
 }
+*/
+
 
 void Projectile::updateDuePlayerInputs(const std::vector<InputEvent>& events)
 {

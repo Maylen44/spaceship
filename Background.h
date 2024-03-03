@@ -11,7 +11,6 @@ public:
 
 	void update(const std::vector<InputEvent>& events) override;
 	void draw(sf::RenderWindow& window) override;
-	GameObjectType getObjectTyp() override { return BackgroundType; };
 
 private:
 	void resetBackground(sf::Sprite& sprite);

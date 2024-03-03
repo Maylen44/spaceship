@@ -55,21 +55,6 @@ void PlayerShip::resetPosition()
 	m_sprite.setPosition(tmp);
 }
 
-sf::FloatRect& PlayerShip::getBounds()
-{
-	sf::FloatRect tmp = {m_sprite.getGlobalBounds().left + (m_size.x / 2 / 2),
-						m_sprite.getGlobalBounds().top + (m_size.y / 2 / 2),
-						m_sprite.getGlobalBounds().width / 2,
-						m_sprite.getGlobalBounds().height / 2 };
-	return tmp;
-}
-
-sf::Vector2f& PlayerShip::getPosition()
-{
-	sf::Vector2f tmp = m_sprite.getPosition();
-	return tmp;
-}
-
 void PlayerShip::handleRotation(sf::RenderWindow& window)
 {
 	sf::Vector2i cursorPosition = sf::Mouse::getPosition(window);

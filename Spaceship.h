@@ -9,7 +9,13 @@ public:
 	Spaceship();
 	virtual ~Spaceship() = default;
 
-	GameObjectType getObjectTyp() override { return ShipType; };
+	void draw(sf::RenderWindow& window) override;
+
+	sf::Vector2f& getPosition();
+	sf::FloatRect& getBounds() override;
+	//float getRotation() { return m_sprite.getRotation(); };
+	int getHealthPoints() override { return m_healthPoints; };
+
 
 protected:
 	const sf::Vector2f m_size;

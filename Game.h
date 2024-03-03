@@ -24,6 +24,7 @@ private:
 
 	bool m_isPlaying;
 	int m_score;
+	int m_numEnemys;
 	Renderer m_renderer;
 	Updater m_updater;
 	EventHandler m_eventHandler;

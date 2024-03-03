@@ -15,10 +15,6 @@ public:
 	void resetPosition() override;
 
 	GameObjectType getObjectTyp() override { return PlayerType; };
-	sf::FloatRect& getBounds() override;
-	sf::Vector2f& getPosition() override;
-	float getRotation() override { return m_sprite.getRotation(); };
-	virtual int getHealthPoints() override { return m_healthPoints; };
 
 private:
 	void handleRotation(sf::RenderWindow& window);

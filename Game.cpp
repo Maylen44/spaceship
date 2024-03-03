@@ -2,8 +2,8 @@
 #include "AssetsManager.h"
 #include "Background.h"
 #include "PlayerShip.h"
-#include "EnemyShipTypeA.h"
-#include "EnemyShipTypeB.h"
+#include "EnemyAlpha.h"
+#include "EnemyBeta.h"
 #include "Projectile.h"
 
 SharedContent* g_sharedContent = nullptr;
@@ -11,6 +11,7 @@ SharedContent* g_sharedContent = nullptr;
 Game::Game()
 	: m_isPlaying(false)
 	, m_score(0)
+	, m_numEnemys(0)
 	, m_renderer()
 	, m_updater()
 	, m_eventHandler()
@@ -28,8 +29,8 @@ void Game::initialize()
 	m_score = 0;
 	creatObject(BackgroundType);
 	creatObject(PlayerType);
-	creatObject(EnemyTypeAType, 3);
-	creatObject(EnemyTypeBType, 2);
+	creatObject(EnemyAlphaType, 3);
+	creatObject(EnemyBetaType, 2);
 	m_updater.resetContent(m_gameObjects);
 }
 
@@ -69,6 +70,7 @@ void Game::run()
 
 void Game::reset()
 {
+	m_numEnemys = 0;
 	clearObject();
 	initialize();
 }
@@ -91,21 +93,23 @@ void Game::creatObject(const GameObjectType& type, int numOfObjects, IGameObject
 			m_gameObjects.push_back(player);
 		}
 	}
-	else if (type == EnemyTypeAType)
+	else if (type == EnemyAlphaType)
 	{
 		for (int i = 0; i < numOfObjects; ++i)
 		{
-			EnemyShipTypeA* enemy1 = new EnemyShipTypeA();
+			EnemyAlpha* enemy1 = new EnemyAlpha();
 			m_gameObjects.push_back(enemy1);
 		}
+		m_numEnemys += numOfObjects;
 	}
-	else if (type == EnemyTypeBType)
+	else if (type == EnemyBetaType)
 	{
 		for (int i = 0; i < numOfObjects; ++i)
 		{
-			EnemyShipTypeB* enemy2 = new EnemyShipTypeB();
+			EnemyBeta* enemy2 = new EnemyBeta();
 			m_gameObjects.push_back(enemy2);
 		}
+		m_numEnemys += numOfObjects;
 	}
 	else if (type == ProjectileType)
 	{
@@ -115,7 +119,6 @@ void Game::creatObject(const GameObjectType& type, int numOfObjects, IGameObject
 			m_gameObjects.push_back(projectile);
 		}
 	}
-	
 }
 
 void Game::clearObject(int index)
@@ -140,8 +143,6 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 {
 	AssetsManager* s_AssetManager = AssetsManager::instance();
 
-	int numEnemys = 0;
-	int tmpHP = 0;
 	GameObjectType type;
 
 	for (int i = 0; i < m_gameObjects.size(); ++i)
@@ -155,12 +156,11 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 		case BackgroundType:
 			break;
 		case PlayerType:
-			tmpHP = m_gameObjects[i]->getHealthPoints();
-			if (tmpHP <= 0)
+			s_AssetManager->TXT_HEALTHPOINTS_PLAYER.setString("HP: " + std::to_string(m_gameObjects[i]->getHealthPoints()));
+			if (m_gameObjects[i]->getHealthPoints() <= 0)
 			{
 				reset();
 			}
-			
 			if ((events[2] == MouseLeftAndRight) || (events[2] == MouseLeft))
 			{
 				if (m_updater.isSFXTime())
@@ -170,10 +170,11 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 			}
 			
 			break;
-		case EnemyTypeAType:
+		case EnemyAlphaType:
 			if (m_gameObjects[i]->getHealthPoints() <= 0)
 			{
 				clearObject(i);
+				--m_numEnemys;
 				--i;
 				m_score += 100;
 			}
@@ -182,10 +183,11 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 				creatObject(ProjectileType, 1, m_gameObjects[i]);
 			}
 			break;
-		case EnemyTypeBType:
+		case EnemyBetaType:
 			if (m_gameObjects[i]->getHealthPoints() <= 0)
 			{
 				clearObject(i);
+				--m_numEnemys;
 				--i;
 				m_score += 200;
 			}
@@ -200,6 +202,7 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 				clearObject(i);
 				--i;
 			}
+			/*
 			else if (m_gameObjects[i]->getBounds().getPosition().x > g_sharedContent->WINDOW_RESOLUTION.x ||
 				m_gameObjects[i]->getBounds().getPosition().y > g_sharedContent->WINDOW_RESOLUTION.y ||
 				m_gameObjects[i]->getBounds().getPosition().x < 0 ||
@@ -208,6 +211,7 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 				clearObject(i);
 				--i;
 			}
+			*/
 			break;
 		case NotSpecifiedType:
 			break;
@@ -215,40 +219,28 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 			break;
 		}
 
-
-		for (auto& object : m_gameObjects)
-		{
-			if (object->getObjectTyp() == EnemyTypeAType || object->getObjectTyp() == EnemyTypeBType)
-			{
-				++numEnemys;
-			}
-		}
-		if (numEnemys <= 2)
+		if (m_numEnemys <= 2)
 		{
 			if (m_updater.isSpawnTime3S())
 			{
-				creatObject(EnemyTypeAType);
+				creatObject(EnemyAlphaType);
 			}
 			if (m_updater.isSpawnTime7S())
 			{
-				creatObject(EnemyTypeBType);
+				creatObject(EnemyBetaType);
 			}
 		}
-		else if (numEnemys <= 14)
+		else if (m_numEnemys <= 14)
 		{
 			if (m_updater.isSpawnTime3S())
 			{
-				creatObject(EnemyTypeAType);
+				creatObject(EnemyAlphaType);
 			}
 			if (m_updater.isSpawnTime7S())
 			{
-				creatObject(EnemyTypeBType);
+				creatObject(EnemyBetaType);
 			}
 		}
 	}
-	
 	s_AssetManager->TXT_SCORE.setString("Score: " + std::to_string(m_score));
-	s_AssetManager->TXT_HEALTHPOINTS_PLAYER.setString("HP: " + std::to_string(tmpHP));
-	s_AssetManager->TXT_HEALTHPOINTS_PLAYER.setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
-
 }
