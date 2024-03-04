@@ -9,9 +9,6 @@ public:
 	EnemyShip();
 	virtual ~EnemyShip() = default;
 
-private:
-	GameObjectType getObjectTyp() override { return EnemyType; };
-
 protected:
 	void update(const std::vector<InputEvent>& events) override;
 	void resetPosition() override;

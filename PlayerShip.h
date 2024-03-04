@@ -14,8 +14,6 @@ public:
 	void draw(sf::RenderWindow& window) override;
 	void resetPosition() override;
 
-	GameObjectType getObjectTyp() override { return PlayerType; };
-
 private:
 	void handleRotation(sf::RenderWindow& window);
 

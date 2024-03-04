@@ -32,7 +32,7 @@ Background::Background()
 void Background::update(const std::vector<InputEvent>& events)
 {
 	float ingameSpeed = m_scrollSpeed;
-	if (events[2] == MouseRight || events[2] == MouseLeftAndRight)
+	if (events[2] == InputEvent_MouseRight || events[2] == InputEvent_MouseLeftAndRight)
 	{
 		ingameSpeed *= m_boostMultiplier;
 	}
@@ -41,35 +41,35 @@ void Background::update(const std::vector<InputEvent>& events)
 	{
 		switch (events[1])
 		{
-		case Up:
+		case InputEvent_Up:
 			sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + ingameSpeed);
 			m_passiveStriveDirection = { 0.0f, m_passiveStriveSpeed };
 			break;
-		case Down:
+		case InputEvent_Down:
 			sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - ingameSpeed);
 			m_passiveStriveDirection = { 0.0f, -m_passiveStriveSpeed };
 			break;
-		case Left:
+		case InputEvent_Left:
 			sprite.setPosition(sprite.getPosition().x + ingameSpeed, sprite.getPosition().y);
 			m_passiveStriveDirection = { m_passiveStriveSpeed, 0.0f };
 			break;
-		case Right:
+		case InputEvent_Right:
 			sprite.setPosition(sprite.getPosition().x - ingameSpeed, sprite.getPosition().y);
 			m_passiveStriveDirection = { -m_passiveStriveSpeed, 0.0f };
 			break;
-		case UpLeft:
+		case InputEvent_UpLeft:
 			sprite.setPosition(sprite.getPosition().x + ingameSpeed, sprite.getPosition().y + ingameSpeed);
 			m_passiveStriveDirection = { m_passiveStriveSpeed, m_passiveStriveSpeed };
 			break;
-		case UpRight:
+		case InputEvent_UpRight:
 			sprite.setPosition(sprite.getPosition().x - ingameSpeed, sprite.getPosition().y + ingameSpeed);
 			m_passiveStriveDirection = { -m_passiveStriveSpeed, m_passiveStriveSpeed };
 			break;
-		case DownLeft:
+		case InputEvent_DownLeft:
 			sprite.setPosition(sprite.getPosition().x + ingameSpeed, sprite.getPosition().y - ingameSpeed);
 			m_passiveStriveDirection = { m_passiveStriveSpeed, -m_passiveStriveSpeed };
 			break;
-		case DownRight:
+		case InputEvent_DownRight:
 			sprite.setPosition(sprite.getPosition().x - ingameSpeed, sprite.getPosition().y - ingameSpeed);
 			m_passiveStriveDirection = { -m_passiveStriveSpeed, -m_passiveStriveSpeed };
 			break;

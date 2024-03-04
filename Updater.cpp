@@ -1,11 +1,15 @@
 #include "Updater.h"
+#include "PlayerShip.h"
+#include "EnemyAlpha.h"
+#include "EnemyBeta.h"
+#include "Projectile.h"
 
 Updater::Updater()
 	: m_deltaClock()
 {
 }
 
-void Updater::update(const std::vector<IGameObject*>& objects, 
+void Updater::update(std::vector<IGameObject*>& objects, 
 					const std::vector<InputEvent>& events)
 {
 	if (isFrameTime())
@@ -14,15 +18,17 @@ void Updater::update(const std::vector<IGameObject*>& objects,
 		{
 			firstObject->update(events);
 
-			if (firstObject->getObjectTyp() != NotSpecifiedType &&
-				firstObject->getObjectTyp() != BackgroundType &&
-				firstObject->getObjectTyp() != ShipType)
+			if(dynamic_cast<PlayerShip*>(firstObject) ||
+				dynamic_cast<EnemyAlpha*>(firstObject) ||
+				dynamic_cast<EnemyBeta*>(firstObject) ||
+				dynamic_cast<Projectile*>(firstObject))
 			{
 				for (auto& secondObject : objects)
 				{
-					if (secondObject->getObjectTyp() != NotSpecifiedType &&
-						secondObject->getObjectTyp() != BackgroundType &&
-						secondObject->getObjectTyp() != ShipType)
+					if (dynamic_cast<PlayerShip*>(secondObject) ||
+						dynamic_cast<EnemyAlpha*>(secondObject) ||
+						dynamic_cast<EnemyBeta*>(secondObject) ||
+						dynamic_cast<Projectile*>(secondObject))
 					{
 						manageCollisions(firstObject, secondObject);
 					}
@@ -32,17 +38,6 @@ void Updater::update(const std::vector<IGameObject*>& objects,
 		}
 	}
 
-	/*
-	if (isFireTimeA())
-	{
-		//fire command to ships
-	}
-
-	if (isFireTimeB())
-	{
-		//fire command to ships
-	}
-	*/
 }
 
 void Updater::resetContent(std::vector<IGameObject*>& objects)
@@ -148,7 +143,7 @@ void Updater::manageCollisions(IGameObject* firstObject, IGameObject* secondObje
 		{
 			if (isSFXTime())
 			{
-				s_AssetManager->playSFX(CollisionSound);
+				s_AssetManager->playSFX(SFX_CollisionSound);
 				firstObject->handleInterraction(secondObjectBounds);
 				secondObject->handleInterraction(firstObjectBounds);
 			}

@@ -27,8 +27,6 @@ void EnemyShip::update(const std::vector<InputEvent>& events)
 	}
 }
 
-
-
 void EnemyShip::resetPosition()
 {
 	sf::Vector2f spawnPosition = { 0.0f, 0.0f };
@@ -49,35 +47,35 @@ void EnemyShip::resetPosition()
 void EnemyShip::updateDuePlayerInputs(const std::vector<InputEvent>& events)
 {
 	float ingameSpeed = m_speed;
-	if (events[2] == MouseRight || events[2] == MouseLeftAndRight)
+	if (events[2] == InputEvent_MouseRight || events[2] == InputEvent_MouseLeftAndRight)
 	{
 		ingameSpeed *= m_boostMultiplier;
 	}
 
 	switch (events[1])
 	{
-	case Up:
+	case InputEvent_Up:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case Down:
+	case InputEvent_Down:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y - ingameSpeed);
 		break;
-	case Left:
+	case InputEvent_Left:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y);
 		break;
-	case Right:
+	case InputEvent_Right:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y);
 		break;
-	case UpLeft:
+	case InputEvent_UpLeft:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case UpRight:
+	case InputEvent_UpRight:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y + ingameSpeed);
 		break;
-	case DownLeft:
+	case InputEvent_DownLeft:
 		m_sprite.setPosition(m_sprite.getPosition().x + ingameSpeed, m_sprite.getPosition().y - ingameSpeed);
 		break;
-	case DownRight:
+	case InputEvent_DownRight:
 		m_sprite.setPosition(m_sprite.getPosition().x - ingameSpeed, m_sprite.getPosition().y - ingameSpeed);
 		break;
 	default:

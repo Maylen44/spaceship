@@ -24,31 +24,33 @@ extern SharedContent* g_sharedContent;
 
 enum InputEvent
 {
-	NoInput,
-	Up,
-	W,
-	Down,
-	S,
-	Left,
-	A,
-	Right,
-	D,
-	UpLeft,
-	UpRight,
-	DownLeft,
-	DownRight,
-	ESC,
-	Restart,
-	MouseLeft,
-	MouseRight,
-	MouseLeftAndRight
+	InputEvent_NoInput,
+	InputEvent_Up,
+	InputEvent_W,
+	InputEvent_Down,
+	InputEvent_S,
+	InputEvent_Left,
+	InputEvent_A,
+	InputEvent_Right,
+	InputEvent_D,
+	InputEvent_UpLeft,
+	InputEvent_UpRight,
+	InputEvent_DownLeft,
+	InputEvent_DownRight,
+	InputEvent_ESC,
+	InputEvent_Restart,
+	InputEvent_MouseLeft,
+	InputEvent_MouseRight,
+	InputEvent_MouseLeftAndRight,
+	InputEvent_MAX
 };
 
 enum SFX
 {
-	LaserShotSound,
-	RestartSound,
-	CollisionSound
+	SFX_LaserShotSound,
+	SFX_RestartSound,
+	SFX_CollisionSound,
+	SFX_MAX
 };
 
 

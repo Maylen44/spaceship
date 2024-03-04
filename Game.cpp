@@ -23,22 +23,11 @@ Game::Game()
 	}
 }
 
-void Game::initialize()
-{
-	m_isPlaying = true;
-	m_score = 0;
-	creatObject(BackgroundType);
-	creatObject(PlayerType);
-	creatObject(EnemyAlphaType, 3);
-	creatObject(EnemyBetaType, 2);
-	m_updater.resetContent(m_gameObjects);
-}
-
 void Game::run()
 {
 	initialize();
 	AssetsManager* s_AssetManager = AssetsManager::instance();
-	std::vector<InputEvent> events(3, NoInput);
+	std::vector<InputEvent> events(3, InputEvent_NoInput);
 
 	while (m_isPlaying)
 	{
@@ -46,15 +35,15 @@ void Game::run()
 
 		switch (events[0])
 		{
-		case ESC:
+		case InputEvent_ESC:
 			m_isPlaying = false;
 			clearObject();
 			m_renderer.closeWindow();
 			break;
-		case Restart:
+		case InputEvent_Restart:
 			if (m_updater.isSFXTime())
 			{
-				s_AssetManager->playSFX(RestartSound);
+				s_AssetManager->playSFX(SFX_RestartSound);
 			}
 			reset();
 			break;
@@ -63,9 +52,22 @@ void Game::run()
 		}
 		m_updater.update(m_gameObjects, events);
 		progressGameLogic(events);
+
+		s_AssetManager->TXT_SCORE.setString("Score: " + std::to_string(m_score));
 		m_renderer.renderContent(m_gameObjects);
 		
 	}
+}
+
+void Game::initialize()
+{
+	m_isPlaying = true;
+	m_score = 0;
+	createObject(GameObjectType_Background, 1);
+	createObject(GameObjectType_PlayerShip, 1);
+	createObject(GameObjectType_EnemyAlpha, 3);
+	createObject(GameObjectType_EnemyBeta, 2);
+	m_updater.resetContent(m_gameObjects);
 }
 
 void Game::reset()
@@ -75,49 +77,47 @@ void Game::reset()
 	initialize();
 }
 
-void Game::creatObject(const GameObjectType& type, int numOfObjects, IGameObject* refObject)
+void Game::createObject(GameObjectType type, int numOfObjects, float shotAngle, sf::Vector2f shotPosition)
 {
-	if (type == BackgroundType)
+	switch (type)
 	{
+	case GameObjectType_Background:
 		for (int i = 0; i < numOfObjects; ++i)
 		{
-			Background* background = new Background();
-			m_gameObjects.push_back(background);
+			Background* newObject = new Background();
+			m_gameObjects.push_back(newObject);
 		}
-	}
-	else if (type == PlayerType)
-	{
-		for (int i = 0; i < numOfObjects; ++i)
-		{ 
-			PlayerShip* player = new PlayerShip();
-			m_gameObjects.push_back(player);
-		}
-	}
-	else if (type == EnemyAlphaType)
-	{
+		break;
+	case GameObjectType_PlayerShip:
 		for (int i = 0; i < numOfObjects; ++i)
 		{
-			EnemyAlpha* enemy1 = new EnemyAlpha();
-			m_gameObjects.push_back(enemy1);
+			PlayerShip* newObject = new PlayerShip();
+			m_gameObjects.push_back(newObject);
 		}
-		m_numEnemys += numOfObjects;
-	}
-	else if (type == EnemyBetaType)
-	{
+		break;
+	case GameObjectType_EnemyAlpha:
 		for (int i = 0; i < numOfObjects; ++i)
 		{
-			EnemyBeta* enemy2 = new EnemyBeta();
-			m_gameObjects.push_back(enemy2);
+			EnemyAlpha* newObject = new EnemyAlpha();
+			m_gameObjects.push_back(newObject);
 		}
-		m_numEnemys += numOfObjects;
-	}
-	else if (type == ProjectileType)
-	{
+		break;
+	case GameObjectType_EnemyBeta:
 		for (int i = 0; i < numOfObjects; ++i)
 		{
-			Projectile* projectile = new Projectile(refObject);
-			m_gameObjects.push_back(projectile);
+			EnemyBeta* newObject = new EnemyBeta();
+			m_gameObjects.push_back(newObject);
 		}
+		break;
+	case GameObjectType_Projectile:
+		for (int i = 0; i < numOfObjects; ++i)
+		{
+			Projectile* newObject = new Projectile(shotAngle, shotPosition);
+			m_gameObjects.push_back(newObject);
+		}
+		break;
+	default:
+		break;
 	}
 }
 
@@ -143,35 +143,29 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 {
 	AssetsManager* s_AssetManager = AssetsManager::instance();
 
-	GameObjectType type;
-
 	for (int i = 0; i < m_gameObjects.size(); ++i)
 	{
-		type = m_gameObjects[i]->getObjectTyp();
-
-		switch (type)
+		if (dynamic_cast<PlayerShip*>(m_gameObjects[i]))
 		{
-		case ShipType:
-			break;
-		case BackgroundType:
-			break;
-		case PlayerType:
-			s_AssetManager->TXT_HEALTHPOINTS_PLAYER.setString("HP: " + std::to_string(m_gameObjects[i]->getHealthPoints()));
-			if (m_gameObjects[i]->getHealthPoints() <= 0)
+			if (!m_gameObjects[i]->isActive())
 			{
 				reset();
 			}
-			if ((events[2] == MouseLeftAndRight) || (events[2] == MouseLeft))
+			if ((events[2] == InputEvent_MouseLeftAndRight) ||
+				(events[2] == InputEvent_MouseLeft))
 			{
 				if (m_updater.isSFXTime())
 				{
-					creatObject(ProjectileType, 1, m_gameObjects[i]);
+					createObject(GameObjectType_Projectile,
+								1,
+								dynamic_cast<Spaceship*>(m_gameObjects[i])->getRotation(),
+								dynamic_cast<Spaceship*>(m_gameObjects[i])->getPosition());
 				}
 			}
-			
-			break;
-		case EnemyAlphaType:
-			if (m_gameObjects[i]->getHealthPoints() <= 0)
+		}
+		else if (dynamic_cast<EnemyAlpha*>(m_gameObjects[i]))
+		{
+			if (!m_gameObjects[i]->isActive())
 			{
 				clearObject(i);
 				--m_numEnemys;
@@ -180,11 +174,15 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 			}
 			if (m_updater.isFireTime1S())
 			{
-				creatObject(ProjectileType, 1, m_gameObjects[i]);
+				createObject(GameObjectType_Projectile,
+					1,
+					dynamic_cast<Spaceship*>(m_gameObjects[i])->getRotation(),
+					dynamic_cast<Spaceship*>(m_gameObjects[i])->getPosition());
 			}
-			break;
-		case EnemyBetaType:
-			if (m_gameObjects[i]->getHealthPoints() <= 0)
+		}
+		else if (dynamic_cast<EnemyBeta*>(m_gameObjects[i]))
+		{
+			if (!m_gameObjects[i]->isActive())
 			{
 				clearObject(i);
 				--m_numEnemys;
@@ -193,15 +191,20 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 			}
 			if (m_updater.isFireTime075S())
 			{
-				creatObject(ProjectileType, 1, m_gameObjects[i]);
+				createObject(GameObjectType_Projectile,
+					1,
+					dynamic_cast<Spaceship*>(m_gameObjects[i])->getRotation(),
+					dynamic_cast<Spaceship*>(m_gameObjects[i])->getPosition());
 			}
-			break;
-		case ProjectileType:
-			if (m_gameObjects[i]->getHealthPoints() <= 0)
+		}
+		else if (dynamic_cast<Projectile*>(m_gameObjects[i]))
+		{
+			if (!m_gameObjects[i]->isActive())
 			{
 				clearObject(i);
 				--i;
 			}
+			
 			/*
 			else if (m_gameObjects[i]->getBounds().getPosition().x > g_sharedContent->WINDOW_RESOLUTION.x ||
 				m_gameObjects[i]->getBounds().getPosition().y > g_sharedContent->WINDOW_RESOLUTION.y ||
@@ -212,35 +215,34 @@ void Game::progressGameLogic(const std::vector<InputEvent>& events)
 				--i;
 			}
 			*/
-			break;
-		case NotSpecifiedType:
-			break;
-		default:
-			break;
 		}
 
 		if (m_numEnemys <= 2)
 		{
 			if (m_updater.isSpawnTime3S())
 			{
-				creatObject(EnemyAlphaType);
+				createObject(GameObjectType_EnemyAlpha, 1);
+				m_numEnemys++;
 			}
 			if (m_updater.isSpawnTime7S())
 			{
-				creatObject(EnemyBetaType);
+				createObject(GameObjectType_EnemyBeta, 1);
+				m_numEnemys++;
 			}
 		}
 		else if (m_numEnemys <= 14)
 		{
 			if (m_updater.isSpawnTime3S())
 			{
-				creatObject(EnemyAlphaType);
+				createObject(GameObjectType_EnemyAlpha, 1);
+				m_numEnemys++;
 			}
 			if (m_updater.isSpawnTime7S())
 			{
-				creatObject(EnemyBetaType);
+				createObject(GameObjectType_EnemyBeta, 1);
+				m_numEnemys++;
 			}
 		}
 	}
-	s_AssetManager->TXT_SCORE.setString("Score: " + std::to_string(m_score));
+	
 }

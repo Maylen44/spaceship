@@ -34,6 +34,9 @@ PlayerShip::PlayerShip()
 
 void PlayerShip::update(const std::vector<InputEvent>& events)
 {
+	AssetsManager* s_AssetManager = AssetsManager::instance();
+	s_AssetManager->TXT_HEALTHPOINTS_PLAYER.setString("HP: " + std::to_string(m_healthPoints));
+
 	m_sprite.setRotation(m_rotationAngle);
 }
 
@@ -54,6 +57,7 @@ void PlayerShip::resetPosition()
 						g_sharedContent->WINDOW_RESOLUTION.y / 2 - m_size.y / 2};
 	m_sprite.setPosition(tmp);
 }
+
 
 void PlayerShip::handleRotation(sf::RenderWindow& window)
 {

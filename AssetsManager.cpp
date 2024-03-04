@@ -12,17 +12,17 @@ void const AssetsManager::playSFX(SFX sound)
 
 	switch (sound)
 	{
-	case LaserShotSound:
+	case SFX_LaserShotSound:
 		SFX_LASER_SHOT.setBuffer(SFX_BUFFER_LASER_SHOT);
 		SFX_LASER_SHOT.setVolume(VOLUME_SFX);
 		pSound = &SFX_LASER_SHOT;
 		break;
-	case RestartSound:
+	case SFX_RestartSound:
 		SFX_RESTART.setBuffer(SFX_BUFFER_RESTART);
 		SFX_RESTART.setVolume(VOLUME_SFX);
 		pSound = &SFX_RESTART;
 		break;
-	case CollisionSound:
+	case SFX_CollisionSound:
 		SFX_COLLISION.setBuffer(SFX_BUFFER_COLLISION);
 		SFX_COLLISION.setVolume(VOLUME_SFX);
 		pSound = &SFX_COLLISION;

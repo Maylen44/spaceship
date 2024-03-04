@@ -8,7 +8,7 @@ class Updater
 public:
 	Updater();
 
-	void update(const std::vector<IGameObject*>& objects, 
+	void update(std::vector<IGameObject*>& objects, 
 				const std::vector<InputEvent>& events);
 
 	void resetContent(std::vector<IGameObject*>& objects);

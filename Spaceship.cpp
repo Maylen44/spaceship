@@ -7,17 +7,6 @@ Spaceship::Spaceship()
 	, m_healthPoints(0)
 {}
 
-void Spaceship::draw(sf::RenderWindow& window)
-{
-	window.draw(m_sprite);
-}
-
-sf::Vector2f& Spaceship::getPosition()
-{
-	sf::Vector2f tmp = m_sprite.getPosition();
-	return tmp;
-}
-
 sf::FloatRect& Spaceship::getBounds()
 {
 	sf::FloatRect tmp = { m_sprite.getGlobalBounds().left + (m_size.x / 2 / 2),
@@ -26,5 +15,3 @@ sf::FloatRect& Spaceship::getBounds()
 						m_sprite.getGlobalBounds().height / 2 };
 	return tmp;
 }
-
-

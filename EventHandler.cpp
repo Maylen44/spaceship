@@ -2,14 +2,14 @@
 
 void EventHandler::setEvents(std::vector<InputEvent>& events, sf::Event& windowPollEvent)
 {
-    events[0] = NoInput;
+    events[0] = InputEvent_NoInput;
     if ((windowPollEvent.type == sf::Event::Closed) || keyboardState[sf::Keyboard::Escape])
     {
-        events[0] = ESC;
+        events[0] = InputEvent_ESC;
     }
     else if (keyboardState[sf::Keyboard::R])
     {
-        events[0] = Restart;
+        events[0] = InputEvent_Restart;
     }
 
     updateKeyboardState(windowPollEvent);
@@ -36,39 +36,39 @@ void EventHandler::updateMouseState(sf::Event& event)
 
 void EventHandler::setKeyboardEvents(std::vector<InputEvent>& events)
 {
-    events[1] = NoInput;
+    events[1] = InputEvent_NoInput;
 
     if ((keyboardState[sf::Keyboard::W] && keyboardState[sf::Keyboard::A]) ||
         (keyboardState[sf::Keyboard::Up] && keyboardState[sf::Keyboard::Left]))
-        events[1] = UpLeft;
+        events[1] = InputEvent_UpLeft;
     else if ((keyboardState[sf::Keyboard::W] && keyboardState[sf::Keyboard::D]) ||
         (keyboardState[sf::Keyboard::Up] && keyboardState[sf::Keyboard::Right]))
-        events[1] = UpRight;
+        events[1] = InputEvent_UpRight;
     else if ((keyboardState[sf::Keyboard::S] && keyboardState[sf::Keyboard::A]) ||
         (keyboardState[sf::Keyboard::Down] && keyboardState[sf::Keyboard::Left]))
-        events[1] = DownLeft;
+        events[1] = InputEvent_DownLeft;
     else if ((keyboardState[sf::Keyboard::S] && keyboardState[sf::Keyboard::D]) ||
         (keyboardState[sf::Keyboard::Down] && keyboardState[sf::Keyboard::Right]))
-        events[1] = DownRight;
+        events[1] = InputEvent_DownRight;
 
     else if (keyboardState[sf::Keyboard::W] || keyboardState[sf::Keyboard::Up])
-        events[1] = Up;
+        events[1] = InputEvent_Up;
     else if (keyboardState[sf::Keyboard::S] || keyboardState[sf::Keyboard::Down])
-        events[1] = Down;
+        events[1] = InputEvent_Down;
     else if (keyboardState[sf::Keyboard::A] || keyboardState[sf::Keyboard::Left])
-        events[1] = Left;
+        events[1] = InputEvent_Left;
     else if (keyboardState[sf::Keyboard::D] || keyboardState[sf::Keyboard::Right])
-        events[1] = Right;
+        events[1] = InputEvent_Right;
 }
 
 void EventHandler::setMouseEvents(std::vector<InputEvent>& events)
 {
-    events[2] = NoInput;
+    events[2] = InputEvent_NoInput;
 
     if (mouseState[sf::Mouse::Left] && mouseState[sf::Mouse::Right])
-        events[2] = MouseLeftAndRight;
+        events[2] = InputEvent_MouseLeftAndRight;
     else if (mouseState[sf::Mouse::Left])
-        events[2] = MouseLeft;
+        events[2] = InputEvent_MouseLeft;
     else if (mouseState[sf::Mouse::Right])
-        events[2] = MouseRight;
+        events[2] = InputEvent_MouseRight;
 }

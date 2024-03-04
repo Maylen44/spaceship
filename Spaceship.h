@@ -9,20 +9,18 @@ public:
 	Spaceship();
 	virtual ~Spaceship() = default;
 
-	void draw(sf::RenderWindow& window) override;
+	void draw(sf::RenderWindow& window) override { window.draw(m_sprite); };
+	bool isActive() override { if (m_healthPoints <= 0) { return false; } };
 
-	sf::Vector2f& getPosition();
 	sf::FloatRect& getBounds() override;
-	//float getRotation() { return m_sprite.getRotation(); };
-	int getHealthPoints() override { return m_healthPoints; };
-
+	virtual float getRotation() { return m_sprite.getRotation(); };
+	virtual sf::Vector2f getPosition() { return m_sprite.getPosition(); };
 
 protected:
-	const sf::Vector2f m_size;
+	sf::Vector2f m_size;
 	sf::Sprite m_sprite;
 	const float m_passiveStriveSpeed;
 	int m_healthPoints;
-
 };
 
 #endif //SPACESHIP_H
