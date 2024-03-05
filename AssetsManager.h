@@ -3,34 +3,59 @@
 
 #include "SharedContent.h"
 
+enum Texture
+{
+    Texture_Player,
+    Texture_EnemyA,
+    Texture_EnemyB,
+    Texture_Projectile,
+    Texture_Background,
+    Texture_MAX
+};
+
+enum SFX
+{
+	SFX_LaserShotSound,
+	SFX_RestartSound,
+	SFX_CollisionSound,
+	SFX_MAX
+};
+
+enum TextFont
+{
+	TextFont_Default,
+	TextFont_MAX
+};
+
+enum Text
+{
+	Text_Score,
+	Text_PlayerHP,
+	Text_MAX
+};
+
 class AssetsManager
 {
 public:
 	static AssetsManager* instance();
-	void const playSFX(SFX sound);
+	const void playSFX(SFX soundType);
+	void editText(Text textType, const std::string textContent) { m_texts[textType].setString(textContent); };
 
-	sf::Texture TX_BACKGROUND,
-		TX_PLAYER_SHIP,
-		TX_ENEMY_SHIP_VAR_1,
-		TX_ENEMY_SHIP_VAR_2,
-		TX_PROJECTILE;
-
-	sf::SoundBuffer SFX_BUFFER_LASER_SHOT,
-		SFX_BUFFER_LASER_HIT,
-		SFX_BUFFER_RESTART,
-		SFX_BUFFER_COLLISION;
-	sf::Sound SFX_LASER_SHOT,
-		SFX_RESTART,
-		SFX_COLLISION;
-	sf::Font FOND_DEFAULT;
-	sf::Text TXT_SCORE,
-		TXT_HEALTHPOINTS_PLAYER;
-
-	float VOLUME_SFX{ 100.0f };
-	float VOLUME_MUSIC{ 100.0f };
+	const sf::Texture& getTexture(Texture textureType) { return m_textures[textureType]; };
+	const sf::Text& getText(Text textType) { return m_texts[textType]; };
 
 private:
 	AssetsManager();
+	void loadTextures();
+	void loadSFX();
+	void loadTextFonts();
+	void initTexts(int textsCount);
+
+	std::unordered_map<Texture, sf::Texture> m_textures;
+	std::unordered_map<SFX, sf::SoundBuffer> m_SFXBuffer;
+	std::unordered_map<SFX, sf::Sound> m_SFX;
+	std::unordered_map<TextFont, sf::Font> m_textFonts;
+	std::unordered_map<Text, sf::Text> m_texts;
 };
 
 #endif //ASSETS_MANAGER_H

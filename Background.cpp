@@ -12,7 +12,7 @@ Background::Background()
 	
 	for (int i = 0; i < 4; ++i)
 	{
-		m_backgroundSprites[i].setTexture(s_AssetManager->TX_BACKGROUND);
+		m_backgroundSprites[i].setTexture(s_AssetManager->getTexture(Texture::Texture_Background));
 		m_backgroundSprites[i].setOrigin(0.f, 0.f);
 		if (i == 1)
 		{

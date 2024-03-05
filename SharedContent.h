@@ -7,6 +7,8 @@
 #include <cmath>
 #include <string>
 #include <unordered_map>
+#include <filesystem>
+#include <iostream>
 
 struct SharedContent
 {
@@ -18,6 +20,10 @@ struct SharedContent
 	sf::Time TIME_RATE_1S{ sf::seconds(1.0f) };
 	sf::Time TIME_RATE_3S{ sf::seconds(3.0f) };
 	sf::Time TIME_RATE_7S{ sf::seconds(7.0f) };
+
+	float VOLUME_SFX{ 100.0f };
+	float VOLUME_MUSIC{ 100.0f };
+
 };
 
 extern SharedContent* g_sharedContent;
@@ -43,14 +49,6 @@ enum InputEvent
 	InputEvent_MouseRight,
 	InputEvent_MouseLeftAndRight,
 	InputEvent_MAX
-};
-
-enum SFX
-{
-	SFX_LaserShotSound,
-	SFX_RestartSound,
-	SFX_CollisionSound,
-	SFX_MAX
 };
 
 

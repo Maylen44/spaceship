@@ -6,30 +6,12 @@ AssetsManager* AssetsManager::instance()
 	return s_Instance;
 }
 
-void const AssetsManager::playSFX(SFX sound)
+const void AssetsManager::playSFX(SFX soundType)
 {
 	sf::Sound* pSound = nullptr;
-
-	switch (sound)
-	{
-	case SFX_LaserShotSound:
-		SFX_LASER_SHOT.setBuffer(SFX_BUFFER_LASER_SHOT);
-		SFX_LASER_SHOT.setVolume(VOLUME_SFX);
-		pSound = &SFX_LASER_SHOT;
-		break;
-	case SFX_RestartSound:
-		SFX_RESTART.setBuffer(SFX_BUFFER_RESTART);
-		SFX_RESTART.setVolume(VOLUME_SFX);
-		pSound = &SFX_RESTART;
-		break;
-	case SFX_CollisionSound:
-		SFX_COLLISION.setBuffer(SFX_BUFFER_COLLISION);
-		SFX_COLLISION.setVolume(VOLUME_SFX);
-		pSound = &SFX_COLLISION;
-	default:
-		break;
-	}
-
+	m_SFX[soundType].setBuffer(m_SFXBuffer[soundType]);
+	m_SFX[soundType].setVolume(g_sharedContent->VOLUME_SFX);
+	pSound = &m_SFX[soundType];
 	if (pSound != nullptr)
 	{
 		pSound->play();
@@ -37,26 +19,133 @@ void const AssetsManager::playSFX(SFX sound)
 }
 
 AssetsManager::AssetsManager()
+	: m_textures()
+	, m_SFXBuffer()
+	, m_SFX()
+	, m_textFonts()
+	, m_texts()
 {
-	//Texture initialization
-	TX_BACKGROUND.loadFromFile("sprites/bkgd_1.png");
-	TX_PLAYER_SHIP.loadFromFile("sprites/player.png");
-	TX_ENEMY_SHIP_VAR_1.loadFromFile("sprites/enemyA.png");
-	TX_ENEMY_SHIP_VAR_2.loadFromFile("sprites/enemyB.png");
-	TX_PROJECTILE.loadFromFile("sprites/projectile.png");
+	loadTextures();
+	loadSFX();
+	loadTextFonts();
+	initTexts(Text::Text_MAX);
 
-	//SFX initialization
-	SFX_BUFFER_LASER_SHOT.loadFromFile("SFX/laser10.wav");
-	SFX_BUFFER_RESTART.loadFromFile("SFX/restart.wav");
-	SFX_BUFFER_COLLISION.loadFromFile("SFX/tir.mp3");
+	m_texts[Text::Text_Score].setFont(m_textFonts[TextFont::TextFont_Default]);
+	m_texts[Text::Text_PlayerHP].setFont(m_textFonts[TextFont::TextFont_Default]);
+	m_texts[Text::Text_Score].setCharacterSize(24);
+	m_texts[Text::Text_PlayerHP].setCharacterSize(24);
+	m_texts[Text::Text_Score].setFillColor(sf::Color::Yellow);
+	m_texts[Text::Text_PlayerHP].setFillColor(sf::Color::Green);
+	m_texts[Text::Text_PlayerHP].setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
+}
 
-	//Font and Text initialization
-	FOND_DEFAULT.loadFromFile("font/GlitchGoblinv.ttf");
-	TXT_SCORE.setFont(FOND_DEFAULT);
-	TXT_HEALTHPOINTS_PLAYER.setFont(FOND_DEFAULT);
-	TXT_SCORE.setCharacterSize(24);
-	TXT_HEALTHPOINTS_PLAYER.setCharacterSize(24);
-	TXT_SCORE.setFillColor(sf::Color::Yellow);
-	TXT_HEALTHPOINTS_PLAYER.setFillColor(sf::Color::Green);
-	TXT_HEALTHPOINTS_PLAYER.setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
+void AssetsManager::loadTextures()
+{
+	const std::string directory = "Assets/sprites/";
+	const std::unordered_map<std::string, Texture> texturesMapping
+	{
+		{"player.png", Texture::Texture_Player},
+		{"enemyA.png", Texture::Texture_EnemyA},
+		{"enemyB.png", Texture::Texture_EnemyB},
+		{"projectile.png", Texture::Texture_Projectile},
+		{"bkgd_1.png", Texture::Texture_Background}
+	};
+
+	for (const auto& entry : std::filesystem::directory_iterator(directory))
+	{
+		if (entry.is_regular_file())
+		{
+			sf::Texture texture;
+			std::string filename = entry.path().filename().string();
+			auto iterator = texturesMapping.find(filename);
+
+			if (iterator != texturesMapping.end())
+			{
+				if (texture.loadFromFile(directory + filename))
+				{
+					m_textures[iterator->second] = texture;
+				}
+				else
+				{
+					std::cout << "Failed to load file: " << filename << std::endl;
+				}
+			}
+		}
+	}
+}
+
+void AssetsManager::loadSFX()
+{
+	const std::string directory = "Assets/SFX/";
+	const std::unordered_map<std::string, SFX> SFXBufferMapping
+	{
+		{"laser10.wav", SFX::SFX_LaserShotSound},
+		{"restart.wav", SFX::SFX_RestartSound},
+		{"tir.mp3", SFX::SFX_CollisionSound},
+	};
+
+	for (const auto& entry : std::filesystem::directory_iterator(directory))
+	{
+		if (entry.is_regular_file())
+		{
+			sf::SoundBuffer SFXBuffer;
+			sf::Sound SFX;
+			std::string filename = entry.path().filename().string();
+			auto iterator = SFXBufferMapping.find(filename);
+
+			if (iterator != SFXBufferMapping.end())
+			{
+				if (SFXBuffer.loadFromFile(directory + filename))
+				{
+					m_SFXBuffer[iterator->second] = SFXBuffer;
+					m_SFX[iterator->second] = SFX;
+				}
+				else
+				{
+					std::cout << "Failed to load file: " << filename << std::endl;
+				}
+			}
+		}
+	}
+}
+
+void AssetsManager::loadTextFonts()
+{
+	const std::string directory = "Assets/text_fonts/";
+	const std::unordered_map<std::string, TextFont> TextFontMapping
+	{
+		{"GlitchGoblinv.ttf", TextFont::TextFont_Default},
+	};
+
+	for (const auto& entry : std::filesystem::directory_iterator(directory))
+	{
+		if (entry.is_regular_file())
+		{
+			sf::Font textFont;
+			std::string filename = entry.path().filename().string();
+			auto iterator = TextFontMapping.find(filename);
+
+			if (iterator != TextFontMapping.end())
+			{
+				if (textFont.loadFromFile(directory + filename))
+				{
+					m_textFonts[iterator->second] = textFont;
+				}
+				else
+				{
+					std::cout << "Failed to load file: " << filename << std::endl;
+				}
+			}
+		}
+	}
+}
+
+void AssetsManager::initTexts(int textsCount)
+{
+	for (int i = 0; i < textsCount; ++i)
+	{
+		sf::Text text;
+		Text enumValue = static_cast<Text>(i);
+		m_texts[enumValue] = text;
+	}
 }

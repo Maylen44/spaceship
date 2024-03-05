@@ -53,7 +53,7 @@ void Game::run()
 		m_updater.update(m_gameObjects, events);
 		progressGameLogic(events);
 
-		s_AssetManager->TXT_SCORE.setString("Score: " + std::to_string(m_score));
+		s_AssetManager->editText(Text::Text_Score, "Score: " + std::to_string(m_score));
 		m_renderer.renderContent(m_gameObjects);
 		
 	}

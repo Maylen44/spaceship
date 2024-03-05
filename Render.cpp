@@ -31,8 +31,10 @@ void const Renderer::renderContent(const std::vector<IGameObject*>& objects)
 	{
 		objects[i]->draw(m_window);
 	}
-	m_window.draw(s_AssetManager->TXT_SCORE);
-	m_window.draw(s_AssetManager->TXT_HEALTHPOINTS_PLAYER);
+	for (int i = 0; i < Text::Text_MAX; i++)
+	{
+		m_window.draw(s_AssetManager->getText(static_cast<Text>(i)));
+	}
 	m_window.display();
 }
 

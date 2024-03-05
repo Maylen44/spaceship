@@ -8,7 +8,7 @@ Projectile::Projectile(const float shotAngle, const sf::Vector2f shotStartPositi
 
 	m_size = sf::Vector2f(10.0f, 10.0f);
 	m_healthPoints = 1;
-	m_sprite.setTexture(s_AssetManager->TX_PROJECTILE);
+	m_sprite.setTexture(s_AssetManager->getTexture(Texture::Texture_Projectile));
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 	m_sprite.setOrigin(0.25f * m_size.x, -m_size.x - 21.0f);
 	m_sprite.setRotation(shotAngle);

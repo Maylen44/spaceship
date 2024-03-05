@@ -26,7 +26,7 @@ PlayerShip::PlayerShip()
 	AssetsManager* s_AssetManager = AssetsManager::instance();
 
 	m_healthPoints = 10;
-	m_sprite.setTexture(s_AssetManager->TX_PLAYER_SHIP);
+	m_sprite.setTexture(s_AssetManager->getTexture(Texture::Texture_Player));
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
 	resetPosition();
@@ -35,8 +35,7 @@ PlayerShip::PlayerShip()
 void PlayerShip::update(const std::vector<InputEvent>& events)
 {
 	AssetsManager* s_AssetManager = AssetsManager::instance();
-	s_AssetManager->TXT_HEALTHPOINTS_PLAYER.setString("HP: " + std::to_string(m_healthPoints));
-
+	s_AssetManager->editText(Text::Text_PlayerHP, "HP: " + std::to_string(m_healthPoints));
 	m_sprite.setRotation(m_rotationAngle);
 }
 

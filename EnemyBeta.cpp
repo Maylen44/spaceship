@@ -11,7 +11,7 @@ EnemyBeta::EnemyBeta()
 	m_healthPoints = 3;
 	
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-	m_sprite.setTexture(s_AssetManager->TX_ENEMY_SHIP_VAR_2);
+	m_sprite.setTexture(s_AssetManager->getTexture(Texture::Texture_EnemyB));
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
 	m_sprite.setOrigin(m_size.x / 2, m_size.x / 2);
 	resetPosition();
