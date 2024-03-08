@@ -1,7 +1,7 @@
 #ifndef ASSETS_MANAGER_H
 #define ASSETS_MANAGER_H
 
-#include "SharedContent.h"
+#include "config.h"
 
 enum Texture
 {
@@ -49,7 +49,7 @@ private:
 	void loadTextures();
 	void loadSFX();
 	void loadTextFonts();
-	void initTexts(int textsCount);
+	void initTexts();
 
 	std::unordered_map<Texture, sf::Texture> m_textures;
 	std::unordered_map<SFX, sf::SoundBuffer> m_SFXBuffer;

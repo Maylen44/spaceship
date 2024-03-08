@@ -1,7 +1,7 @@
 #ifndef I_GAME_OBJECT_H
 #define I_GAME_OBJECT_H
 
-#include "SharedContent.h"
+#include "config.h"
 #include "AssetsManager.h"
 
 enum GameObjectType

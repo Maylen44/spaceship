@@ -13,13 +13,13 @@ EnemyShip::EnemyShip()
 void EnemyShip::update(const std::vector<InputEvent>& events)
 {
 	updateDuePlayerInputs(events);
-	sf::Vector2f directionToMiddle = sf::Vector2f(g_sharedContent->WINDOW_RESOLUTION.x / 2, g_sharedContent->WINDOW_RESOLUTION.y / 2) - m_sprite.getPosition();
+	sf::Vector2f directionToMiddle = sf::Vector2f(ConfigManager::instance()->getConfig(ConfigField_WindowResolution_X) / 2, ConfigManager::instance()->getConfig(ConfigField_WindowResolution_Y) / 2) - m_sprite.getPosition();
 	float length = std::sqrt(directionToMiddle.x * directionToMiddle.x + directionToMiddle.y * directionToMiddle.y);
 	updateRotation(directionToMiddle, length);
-	updateFollowBehavior(g_sharedContent->WINDOW_RESOLUTION, directionToMiddle, length);
+	updateFollowBehavior(sf::Vector2f(ConfigManager::instance()->getConfig(ConfigField_WindowResolution_X), ConfigManager::instance()->getConfig(ConfigField_WindowResolution_Y)), directionToMiddle, length);
 
-	if (getBounds().getPosition().x > g_sharedContent->WINDOW_RESOLUTION.x + m_size.x * 2 ||
-		getBounds().getPosition().y > g_sharedContent->WINDOW_RESOLUTION.y + m_size.y * 2 ||
+	if (getBounds().getPosition().x > ConfigManager::instance()->getConfig(ConfigField_WindowResolution_X) + m_size.x * 2 ||
+		getBounds().getPosition().y > ConfigManager::instance()->getConfig(ConfigField_WindowResolution_Y) + m_size.y * 2 ||
 		getBounds().getPosition().x < 0 - m_size.x * 2 ||
 		getBounds().getPosition().y < 0 - m_size.y * 2)
 	{
@@ -33,13 +33,13 @@ void EnemyShip::resetPosition()
 
 	if (rand() % 2 == 0)
 	{
-		spawnPosition.x = (rand() % 2 == 0) ? -m_spawnOffset : g_sharedContent->WINDOW_RESOLUTION.x + m_spawnOffset;
-		spawnPosition.y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (g_sharedContent->WINDOW_RESOLUTION.y - m_spawnOffset * 2) + m_spawnOffset;
+		spawnPosition.x = (rand() % 2 == 0) ? -m_spawnOffset : ConfigManager::instance()->getConfig(ConfigField_WindowResolution_X) + m_spawnOffset;
+		spawnPosition.y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (ConfigManager::instance()->getConfig(ConfigField_WindowResolution_Y) - m_spawnOffset * 2) + m_spawnOffset;
 	}
 	else
 	{
-		spawnPosition.x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (g_sharedContent->WINDOW_RESOLUTION.x - m_spawnOffset * 2) + m_spawnOffset;
-		spawnPosition.y = (rand() % 2 == 0) ? -m_spawnOffset : g_sharedContent->WINDOW_RESOLUTION.y + m_spawnOffset;
+		spawnPosition.x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * (ConfigManager::instance()->getConfig(ConfigField_WindowResolution_X) - m_spawnOffset * 2) + m_spawnOffset;
+		spawnPosition.y = (rand() % 2 == 0) ? -m_spawnOffset : ConfigManager::instance()->getConfig(ConfigField_WindowResolution_Y) + m_spawnOffset;
 	}
 	m_sprite.setPosition(spawnPosition.x, spawnPosition.y);
 }

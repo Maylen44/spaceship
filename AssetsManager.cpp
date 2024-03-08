@@ -10,7 +10,7 @@ const void AssetsManager::playSFX(SFX soundType)
 {
 	sf::Sound* pSound = nullptr;
 	m_SFX[soundType].setBuffer(m_SFXBuffer[soundType]);
-	m_SFX[soundType].setVolume(g_sharedContent->VOLUME_SFX);
+	m_SFX[soundType].setVolume(ConfigManager::instance()->getConfig(ConfigField_VolumeValue_SFX));
 	pSound = &m_SFX[soundType];
 	if (pSound != nullptr)
 	{
@@ -28,19 +28,22 @@ AssetsManager::AssetsManager()
 	loadTextures();
 	loadSFX();
 	loadTextFonts();
-	initTexts(Text::Text_MAX);
+	initTexts();
 
+
+	//TODO
 	m_texts[Text::Text_Score].setFont(m_textFonts[TextFont::TextFont_Default]);
 	m_texts[Text::Text_PlayerHP].setFont(m_textFonts[TextFont::TextFont_Default]);
 	m_texts[Text::Text_Score].setCharacterSize(24);
 	m_texts[Text::Text_PlayerHP].setCharacterSize(24);
 	m_texts[Text::Text_Score].setFillColor(sf::Color::Yellow);
 	m_texts[Text::Text_PlayerHP].setFillColor(sf::Color::Green);
-	m_texts[Text::Text_PlayerHP].setPosition(g_sharedContent->WINDOW_RESOLUTION.x - 80, 0);
+	m_texts[Text::Text_PlayerHP].setPosition(ConfigManager::instance()->getConfig(ConfigField_WindowResolution_X) - 80, 0);
 }
 
 void AssetsManager::loadTextures()
 {
+	//TODO split directory tree
 	const std::string directory = "Assets/sprites/";
 	const std::unordered_map<std::string, Texture> texturesMapping
 	{
@@ -67,6 +70,7 @@ void AssetsManager::loadTextures()
 				}
 				else
 				{
+					//TODO Logger
 					std::cout << "Failed to load file: " << filename << std::endl;
 				}
 			}
@@ -140,9 +144,9 @@ void AssetsManager::loadTextFonts()
 	}
 }
 
-void AssetsManager::initTexts(int textsCount)
+void AssetsManager::initTexts()
 {
-	for (int i = 0; i < textsCount; ++i)
+	for (int i = 0; i < Text::Text_MAX; ++i)
 	{
 		sf::Text text;
 		Text enumValue = static_cast<Text>(i);

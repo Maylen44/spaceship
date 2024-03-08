@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <pugixml.hpp>
 #include <vector>
 #include <cmath>
 #include <string>
@@ -10,23 +11,44 @@
 #include <filesystem>
 #include <iostream>
 
-struct SharedContent
+enum ConfigField
 {
-	sf::Vector2f WINDOW_RESOLUTION{ 800.f, 600.f };
+	ConfigField_WindowResolution_X,
+	ConfigField_WindowResolution_Y,
+	ConfigField_TimeRate_001,
+	ConfigField_TimeRate_05,
+	ConfigField_TimeRate_075,
+	ConfigField_TimeRate_1,
+	ConfigField_TimeRate_3,
+	ConfigField_TimeRate_7,
+	ConfigField_VolumeValue_SFX,
+	ConfigField_VolumeValue_Music,
+	ConfigField_MAX
+};
 
+class ConfigManager
+{
+public:
+	static ConfigManager* instance();
+
+	int getConfig(ConfigField argToGet);
+	void setConfig(ConfigField argToSet, int value);
+
+	//sf::Vector2f WINDOW_RESOLUTION{ 800.f, 600.f };
 	sf::Time TIME_RATE_001S{ sf::seconds(0.01f) };
 	sf::Time TIME_RATE_05S{ sf::seconds(0.5f) };
 	sf::Time TIME_RATE_075S{ sf::seconds(0.75f) };
 	sf::Time TIME_RATE_1S{ sf::seconds(1.0f) };
 	sf::Time TIME_RATE_3S{ sf::seconds(3.0f) };
 	sf::Time TIME_RATE_7S{ sf::seconds(7.0f) };
-
 	float VOLUME_SFX{ 100.0f };
 	float VOLUME_MUSIC{ 100.0f };
+	
 
+private:
+	ConfigManager();
+	const char* m_filePath;
 };
-
-extern SharedContent* g_sharedContent;
 
 enum InputEvent
 {

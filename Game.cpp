@@ -6,7 +6,7 @@
 #include "EnemyBeta.h"
 #include "Projectile.h"
 
-SharedContent* g_sharedContent = nullptr;
+ConfigManager* g_sharedContent = nullptr;
 
 Game::Game()
 	: m_isPlaying(false)
@@ -17,10 +17,6 @@ Game::Game()
 	, m_eventHandler()
 	, m_gameObjects()
 {
-	if (g_sharedContent == nullptr)
-	{
-		g_sharedContent = new SharedContent();
-	}
 }
 
 void Game::run()

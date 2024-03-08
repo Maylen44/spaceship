@@ -1,7 +1,7 @@
 #ifndef EVENT_HANDLER_H
 #define EVENT_HANDLER_H
 
-#include "SharedContent.h"
+#include "config.h"
 
 class EventHandler
 {

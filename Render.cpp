@@ -6,12 +6,8 @@ Renderer::Renderer()
 	, m_windowStyle(sf::Style::Titlebar | sf::Style::Resize | sf::Style::Close)
 	, m_window()
 {
-	if (g_sharedContent == nullptr)
-	{
-		g_sharedContent = new SharedContent();
-	}
-	m_windowMode.width = g_sharedContent->WINDOW_RESOLUTION.x;
-	m_windowMode.height = g_sharedContent->WINDOW_RESOLUTION.y;
+	m_windowMode.width = ConfigManager::instance()->getConfig(ConfigField_WindowResolution_X);
+	m_windowMode.height = ConfigManager::instance()->getConfig(ConfigField_WindowResolution_Y);
 	m_window.create(m_windowMode, m_windowTitel, m_windowStyle);
 }
 

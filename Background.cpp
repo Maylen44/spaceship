@@ -2,7 +2,7 @@
 
 Background::Background()
 	: m_backgroundSprites(4)
-	, m_size(g_sharedContent->WINDOW_RESOLUTION.x, g_sharedContent->WINDOW_RESOLUTION.y)
+	, m_size(ConfigManager::instance()->getConfig(ConfigField_WindowResolution_X), ConfigManager::instance()->getConfig(ConfigField_WindowResolution_Y))
 	, m_scrollSpeed(0.3f)
 	, m_passiveStriveDirection(0.1f, 0.1f)
 	, m_passiveStriveSpeed(0.2f)

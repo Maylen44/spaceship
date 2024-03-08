@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "SharedContent.h"
+#include "config.h"
 #include "Renderer.h"
 #include "Updater.h"
 #include "EventHandler.h"
