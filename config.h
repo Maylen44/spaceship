@@ -1,15 +1,14 @@
 #ifndef SHARED_CONTENT_H
 #define SHARED_CONTENT_H
 
+#include "Logger.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <pugixml.hpp>
 #include <vector>
 #include <cmath>
-#include <string>
 #include <unordered_map>
 #include <filesystem>
-#include <iostream>
 
 enum ConfigField
 {
@@ -34,7 +33,7 @@ public:
 	int getConfig(ConfigField argToGet);
 	void setConfig(ConfigField argToSet, int value);
 
-	//sf::Vector2f WINDOW_RESOLUTION{ 800.f, 600.f };
+	//TODO need to fix reading from xml to delete this fields from here
 	sf::Time TIME_RATE_001S{ sf::seconds(0.01f) };
 	sf::Time TIME_RATE_05S{ sf::seconds(0.5f) };
 	sf::Time TIME_RATE_075S{ sf::seconds(0.75f) };

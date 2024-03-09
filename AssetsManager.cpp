@@ -70,8 +70,7 @@ void AssetsManager::loadTextures()
 				}
 				else
 				{
-					//TODO Logger
-					std::cout << "Failed to load file: " << filename << std::endl;
+					LOGGER->Log("Failed to load file:" + filename);
 				}
 			}
 		}
@@ -106,7 +105,7 @@ void AssetsManager::loadSFX()
 				}
 				else
 				{
-					std::cout << "Failed to load file: " << filename << std::endl;
+					LOGGER->Log("Failed to load file:" + filename);
 				}
 			}
 		}
@@ -137,7 +136,7 @@ void AssetsManager::loadTextFonts()
 				}
 				else
 				{
-					std::cout << "Failed to load file: " << filename << std::endl;
+					LOGGER->Log("Failed to load file:" + filename);
 				}
 			}
 		}

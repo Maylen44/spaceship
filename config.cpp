@@ -43,7 +43,7 @@ ConfigManager* ConfigManager::instance()
 //really work. need to rethink the way i get values from xml
 int ConfigManager::getConfig(ConfigField argToGet)
 {
-    int returnValue;
+    int returnValue = 0;
     pugi::xml_document doc;
 
     if (doc.load_file(m_filePath))
@@ -53,7 +53,7 @@ int ConfigManager::getConfig(ConfigField argToGet)
     }
     else
     {
-        std::cout << "Error loading XML file." << std::endl;
+        LOGGER->Log("Error loading XML file.");
     }
     return returnValue;
 }
@@ -67,15 +67,15 @@ void ConfigManager::setConfig(ConfigField argToSet, int value)
         .find(argToSet)->second).set_value(value);
         if (doc.save_file("config.xml"))
         {
-            std::cout << "XML file saved successfully." << std::endl;
+            LOGGER->Log("XML file saved successfully.");
         }
         else
         {
-            std::cout << "Error saving XML file." << std::endl;
+            LOGGER->Log("Error saving XML file.");
         }
     }
     else
     {
-        std::cerr << "Error loading XML file." << std::endl;
+        LOGGER->Log("Error loading XML file.");
     }
 }

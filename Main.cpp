@@ -10,8 +10,6 @@ int main()
     song.setVolume(50.0f);
     song.setPlayingOffset(sf::seconds(-10.0f));
     song.play();
-    
-    
 
     game.run();
 
