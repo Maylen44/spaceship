@@ -2,8 +2,9 @@
 #define ENEMYSHIP_H
 
 #include "Spaceship.h"
+#include "IObserver.h"
 
-class EnemyShip : public Spaceship
+class EnemyShip : public Spaceship, public IObserver
 {
 public:
 	EnemyShip();

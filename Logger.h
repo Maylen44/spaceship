@@ -4,13 +4,13 @@
 #include <string>
 #include <fstream>
 
-#define LOGGER Logger::GetLogger()
+#define LOGGER Logger::getLogger()
 
 class Logger
 {
 public:
     void Log(const std::string& sMessage);
-    static Logger* GetLogger();
+    static Logger* getLogger();
 
 private:
     Logger() {};

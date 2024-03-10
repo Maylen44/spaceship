@@ -21,7 +21,8 @@ static float getAngle(float x1, float y1, float x2, float y2)
 
 
 PlayerShip::PlayerShip()
-	: m_rotationAngle(m_sprite.getRotation())
+	: IObserver(PackageReceiver_Player)
+	, m_rotationAngle(m_sprite.getRotation())
 {
 	AssetsManager* s_AssetManager = AssetsManager::instance();
 

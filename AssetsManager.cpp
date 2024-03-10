@@ -19,7 +19,8 @@ const void AssetsManager::playSFX(SFX soundType)
 }
 
 AssetsManager::AssetsManager()
-	: m_textures()
+	: IProducer(PackageProducer_AssetManager)
+	, m_textures()
 	, m_SFXBuffer()
 	, m_SFX()
 	, m_textFonts()

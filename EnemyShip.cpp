@@ -1,7 +1,8 @@
 #include "EnemyShip.h"
 
 EnemyShip::EnemyShip()
-	: m_baseSpeed()
+	: IObserver(PackageReceiver_Enemy)
+	, m_baseSpeed()
 	, m_speed()
 	, m_boostMultiplier(2.0f)
 	, m_rotationSpeed()

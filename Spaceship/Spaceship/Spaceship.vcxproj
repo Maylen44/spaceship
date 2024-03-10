@@ -50,6 +50,7 @@
     <ClInclude Include="..\..\IProducer.h" />
     <ClInclude Include="..\..\Logger.h" />
     <ClInclude Include="..\..\MessageController.h" />
+    <ClInclude Include="..\..\IPackageElement.h" />
     <ClInclude Include="..\..\PlayerShip.h" />
     <ClInclude Include="..\..\Projectile.h" />
     <ClInclude Include="..\..\Renderer.h" />

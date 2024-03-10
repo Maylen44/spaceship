@@ -2,6 +2,7 @@
 #define ASSETS_MANAGER_H
 
 #include "config.h"
+#include "IProducer.h"
 
 enum Texture
 {
@@ -34,7 +35,7 @@ enum Text
 	Text_MAX
 };
 
-class AssetsManager
+class AssetsManager : public IProducer
 {
 public:
 	static AssetsManager* instance();

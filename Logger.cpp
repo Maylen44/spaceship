@@ -19,7 +19,7 @@ void Logger::Log(const std::string& sMessage)
     }
 }
 
-Logger* Logger::GetLogger()
+Logger* Logger::getLogger()
 {
     if (m_ptrLogger == nullptr)
     {
